@@ -16,129 +16,120 @@
             background: linear-gradient(135deg, #ff75c3, #8f44ad);
             font-family: 'Arial Black', sans-serif;
             overflow: hidden;
-            text-align: center;
             position: relative;
         }
 
         #instrucao {
             color: black;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
-            z-index: 10;
-            padding: 0 20px;
+            z-index: 5;
+            text-shadow: 1px 1px 5px rgba(255,255,255,0.5);
         }
 
-        /* O botão de coração que foge */
+        /* O botão de coração */
         .btn-coracao {
             font-size: 5rem;
             background: none;
             border: none;
             cursor: pointer;
-            z-index: 10;
-            position: absolute; /* Essencial para mover o botão */
-            transition: all 0.1s ease; /* Transição rápida para o movimento */
-            animation: pulsar 1.5s infinite;
+            z-index: 100;
+            position: absolute; /* Obrigatório para o movimento funcionar */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s ease; /* Faz o movimento ser suave */
         }
 
-        @keyframes pulsar {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Área para as mensagens fofas e imagens */
         #conteudo-final {
-            display: none; /* Começa escondido */
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #mensagem-final {
-            color: #8f44ad;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 200;
         }
 
         .imagem-fofa {
             max-width: 80%;
-            max-height: 50vh;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
         }
 
-        #btn-reiniciar {
-            font-size: 1.2rem;
-            padding: 10px 20px;
-            background-color: #ff75c3;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Corações flutuantes de fundo */
         .heart-bg {
             position: absolute;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 20px;
+            color: rgba(255, 255, 255, 0.3);
             animation: float 6s linear infinite;
             bottom: -50px;
-            z-index: 1;
         }
 
         @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-110vh); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div id="jogo">
-        <div id="instrucao">TENTE PEGAR MEU CORAÇÃO! ❤️</div>
-        <button id="coracao-foge" class="btn-coracao">❤️</button>
-    </div>
+    <div id="instrucao">TENTE PEGAR MEU CORAÇÃO! ❤️</div>
+    <button id="coracao-foge" class="btn-coracao">❤️</button>
 
     <div id="conteudo-final">
-        <div id="mensagem-final"></div>
-        <img id="imagem-fofa" class="imagem-fofa" src="" alt="Imagem Fofa">
-        <button id="btn-reiniciar" onclick="reiniciarJogo()">Tentar de Novo?</button>
+        <h1 style="color: #8f44ad; padding: 20px;">VOCÊ ME PEGOU! ❤️</h1>
+        <p style="font-size: 1.2rem;">SÓ VOCÊ ESTÁ NO MEU CORAÇÃO!</p>
+        <img class="imagem-fofa" src="https://i.pinimg.com/originals/e0/fd/25/e0fd25f9127a9a1098b064c2f88f4021.gif">
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">Recomeçar</button>
     </div>
 
     <script>
-        const btnCoracao = document.getElementById('coracao-foge');
-        const jogoArea = document.getElementById('jogo');
-        const conteudoFinal = document.getElementById('conteudo-final');
-        const mensagemFinal = document.getElementById('mensagem-final');
-        const imagemFofa = document.getElementById('imagem-fofa');
-        const instrucao = document.getElementById('instrucao');
-
+        const btn = document.getElementById('coracao-foge');
         let tentativas = 0;
-        const maxTentativas = 5; // Número de vezes que o coração foge antes de deixar clicar
-        let jogoAtivo = true;
+        const limiteFuga = 6; // Ele foge 6 vezes
 
-        const mensagensLindas = [
-            "VOCÊ CONSEGUIU! MEU CORAÇÃO É SEU!",
-            "SÓ VOCÊ TEM A CHAVE DO MEU CORAÇÃO!",
-            "VOCÊ É A PESSOA MAIS ESPECIAL DO MUNDO!",
-            "CADA SEGUNDO COM VOCÊ É UM PRESENTE!",
-            "MEU AMOR POR VOCÊ SÓ CRESCE!",
-            "VOCÊ É O MEU FELIZ PARA SEMPRE!"
-        ];
+        function desviar() {
+            if (tentativas < limiteFuga) {
+                // Calcula posições aleatórias
+                const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+                
+                // Aplica a nova posição
+                btn.style.left = x + 'px';
+                btn.style.top = y + 'px';
+                btn.style.transform = 'none'; // Remove o centralizador inicial
+                
+                tentativas++;
+            } else {
+                // Para de fugir e deixa clicar
+                document.getElementById('instrucao').innerText = "OK, VOCÊ VENCEU! CLICA AGORA! ❤️";
+                btn.style.filter = "drop-shadow(0 0 10px gold)";
+            }
+        }
 
-        const imagensFofas = [
-            "https://i.pinimg.com/originals/e0/fd/25/e0fd25f9127a9a1098b064c2f88f4021.gif", // GIF de gatinho fofo
-            "https://i.pinimg.com/originals/9f/6e/c3/9f6ec32a188f8b8979e26241a0b9868a.gif", // GIF de urso fofo
-            "
+        // Eventos para fugir
+        btn.addEventListener('mouseover', desviar); // No PC (passar o mouse)
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Evita o clique acidental no mobile
+            desviar();
+        });
+
+        // Evento de clique final
+        btn.addEventListener('click', () => {
+            if (tentativas >= limiteFuga) {
+                document.getElementById('conteudo-final').style.display = 'flex';
+            }
+        });
+
+        // Corações de fundo
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.classList.add('heart-bg');
+            h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 6000);
+        }, 500);
+    </script>
+</body>
+</html>
