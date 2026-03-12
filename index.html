@@ -2,233 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Heart Catch · romantic game</title>
-  <!-- Google Fonts: bold playful vibe -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Heart Catch · smooth mobile & desktop</title>
+  <!-- Google Fonts: bold & playful -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    /* RESET + full bleed */
+    /* ----- RESET & full bleed, mobile optimized ----- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      user-select: none; /* avoid accidental selections while chasing */
+      -webkit-tap-highlight-color: transparent; /* kill flash on tap */
+      user-select: none;
+      -webkit-touch-callout: none;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(45deg, #8f44ad, #ff75c3, #8f44ad, #ff75c3);
+      min-height: -webkit-fill-available; /* better for mobile safari */
+      background: linear-gradient(135deg, #8f44ad, #ff75c3, #b84a8c, #ff75c3);
       background-size: 400% 400%;
-      animation: gradientWaltz 16s ease infinite;
+      animation: gradientFlow 14s ease infinite;
       font-family: 'Poppins', 'Montserrat', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow-x: hidden;
-      touch-action: pan-y pinch-zoom; /* prevent pull-to-refresh interference, keep touch */
+      overflow-y: auto; /* allow small scroll if needed, but we contain */
+      touch-action: pan-y pinch-zoom; /* prevents pull-to-refresh while allowing scroll */
     }
 
-    @keyframes gradientWaltz {
+    @keyframes gradientFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    /* ---------- floating hearts (particle system) ---------- */
+    /* floating heart particles – lightweight CSS only, no extra paint */
     .floating-hearts {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none; /* let clicks pass through */
+      pointer-events: none;
       z-index: 1;
+      overflow: hidden;
     }
 
     .heart-particle {
       position: absolute;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 1.8rem;
+      color: rgba(255, 240, 250, 0.8);
+      font-size: 1.6rem;
       opacity: 0;
-      animation: floatUp 12s linear infinite;
-      filter: drop-shadow(0 0 6px rgba(255, 120, 200, 0.6));
+      animation: floatUp 14s linear infinite;
+      filter: drop-shadow(0 0 8px #ffb6d9);
       will-change: transform, opacity;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(110vh) scale(0.8); opacity: 0.4; }
-      50% { opacity: 0.9; transform: translateY(50vh) scale(1.2) rotate(8deg); }
-      100% { transform: translateY(-20vh) scale(0.6); opacity: 0; }
+      0% { transform: translateY(100vh) scale(0.6); opacity: 0.2; }
+      30% { opacity: 1; }
+      70% { opacity: 0.8; transform: translateY(30vh) scale(1.2) rotate(5deg); }
+      100% { transform: translateY(-20vh) scale(0.5); opacity: 0; }
     }
 
-    /* positions randomly generated via JS, but base style ready */
-
-    /* main container – everything sits on a soft layer above floating hearts */
-    .game-wrapper {
+    /* main container – flexible, no fixed heights that trap */
+    .game-container {
       position: relative;
-      z-index: 10;
+      z-index: 20;
       width: 100%;
-      max-width: 600px;
-      padding: 1rem 1.5rem;
+      max-width: 680px;
+      padding: 0.8rem 1rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh; /* fallback for vertical centering */
+      min-height: 100vh; /* fallback */
+      min-height: -webkit-fill-available;
     }
 
-    /* status panel with playful remark */
+    /* status glass panel */
     .status-panel {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: 60px;
-      padding: 0.9rem 2.2rem;
-      margin-bottom: 2.5rem;
-      border: 1px solid rgba(255,255,255,0.3);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      padding: 0.8rem 1.8rem;
+      margin: 0.5rem 0 2rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      width: fit-content;
     }
 
     .remark {
       font-size: 1.8rem;
       font-weight: 800;
-      letter-spacing: 1px;
       color: white;
-      text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+      text-shadow: 2px 2px 0 #b03b70;
+      letter-spacing: 0.5px;
       font-family: 'Montserrat', sans-serif;
       text-align: center;
       line-height: 1.3;
+      white-space: nowrap;
     }
-    .remark span {
-      display: inline-block;
-      min-width: 180px;
+    @media (max-width: 480px) {
+      .remark { font-size: 1.4rem; white-space: normal; }
     }
 
-    /* hunting zone – relative for heart absolute placement */
-    .hunting-zone {
+    /* HEART ZONE: relative + full width, no fixed height to avoid clipping */
+    .heart-zone {
       position: relative;
       width: 100%;
-      min-height: 300px;
+      flex: 1 1 auto;
+      min-height: 260px;   /* flexible but enough space */
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 1rem 0 2rem;
-      touch-action: none; /* disable scroll while interacting inside zone (optional) */
+      margin: 0.5rem 0 1.5rem;
+      touch-action: none;   /* prevent page drag while interacting inside zone */
     }
 
-    /* the fleeing heart – 3D / glassmorphism style with pulse */
+    /* ----- The fleeing heart (button) ----- */
     .heart-btn {
-      position: absolute;
+      position: absolute;   /* will be moved via transform (left/top) */
       font-size: 5.5rem;
-      cursor: pointer;
-      transition: transform 0.1s ease; /* micro smoothness, but teleport is instant */
-      filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3)) drop-shadow(0 0 15px #ffa0d0);
-      transform-style: preserve-3d;
-      animation: pulse-glow 1.6s infinite ease-in-out;
-      text-shadow: 0 0 20px #ffd0e0;
-      will-change: transform, filter;
       background: transparent;
       border: none;
+      cursor: pointer;
+      filter: drop-shadow(0 15px 25px rgba(200, 20, 100, 0.5));
+      animation: softPulse 1.8s infinite alternate;
+      transition: filter 0.2s;
+      text-shadow: 0 0 25px #ffb0d0;
       line-height: 1;
+      padding: 0;
+      margin: 0;
+      will-change: left, top, transform;
+      /* size for collision area – we'll use a wrapper approach? just the emoji is fine */
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+      /* avoid any extra touch delay */
+      touch-action: none;
     }
 
-    @keyframes pulse-glow {
-      0% { transform: scale(1) translateZ(0); filter: drop-shadow(0 10px 20px #f66); }
-      50% { transform: scale(1.15) translateZ(10px); filter: drop-shadow(0 25px 35px #ff3b6f); }
-      100% { transform: scale(1) translateZ(0); filter: drop-shadow(0 10px 20px #f66); }
+    @keyframes softPulse {
+      0% { transform: scale(1); filter: drop-shadow(0 10px 18px #ff80b0); }
+      100% { transform: scale(1.12); filter: drop-shadow(0 25px 35px #ff3f8f); }
     }
 
-    /* final state: heart stops fleeing, intense glow, invites click */
+    /* yield state: intense glow, no pulse */
     .heart-btn.yield {
-      animation: none; /* stop pulsing? keep a strong glow but no teleport */
-      filter: drop-shadow(0 0 40px #ffeb99) drop-shadow(0 0 80px #ffb3c6);
+      animation: none;
+      filter: drop-shadow(0 0 40px #ffe085) drop-shadow(0 0 90px #ff80b5);
       transform: scale(1.2);
-      transition: filter 0.3s, transform 0.2s;
     }
 
-    /* reveal card – hidden until final click */
+    /* glassmorphism reveal card */
     .reveal-card {
       background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-radius: 50px;
-      padding: 2.5rem 2rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 60px;
+      padding: 2rem 1.8rem;
       width: 100%;
       border: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 30px 50px rgba(0,0,0,0.2), 0 0 0 2px rgba(255,255,255,0.3) inset;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.6);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1.8rem;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.6s ease, visibility 0s 0.6s;
-      margin-top: 1.5rem;
+      transition: opacity 0.5s ease, visibility 0s 0.5s;
     }
 
     .reveal-card.show {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.6s ease, visibility 0s 0s;
+      transition: opacity 0.5s ease, visibility 0s 0s;
     }
 
     .love-message {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: white;
       text-align: center;
-      line-height: 1.3;
-      text-shadow: 4px 4px 0 #b0427b;
+      text-shadow: 4px 4px 0 #b23b75;
       font-family: 'Montserrat', sans-serif;
-      word-break: break-word;
+      line-height: 1.2;
     }
 
     .gif-placeholder {
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       border-radius: 40px;
-      background: rgba(255,210,230,0.3);
+      background: rgba(255,215,235,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 5rem;
-      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
       border: 3px solid white;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
     }
 
     .replay-btn {
       background: white;
       border: none;
-      padding: 1.2rem 3rem;
+      padding: 1rem 2.8rem;
       border-radius: 50px;
       font-size: 1.7rem;
       font-weight: bold;
-      color: #b52b65;
-      box-shadow: 0 12px 0 #b04b7a, 0 8px 25px hotpink;
+      color: #b1316a;
+      box-shadow: 0 10px 0 #a13d68, 0 8px 25px hotpink;
       cursor: pointer;
-      transition: all 0.1s ease;
+      transition: all 0.08s linear;
       font-family: 'Poppins', sans-serif;
-      letter-spacing: 1px;
-      margin-top: 0.5rem;
     }
 
     .replay-btn:active {
-      transform: translateY(8px);
-      box-shadow: 0 4px 0 #b04b7a, 0 8px 20px hotpink;
+      transform: translateY(7px);
+      box-shadow: 0 3px 0 #a13d68, 0 8px 20px hotpink;
     }
 
-    /* extra small adaptation */
-    @media (max-width: 450px) {
-      .remark { font-size: 1.4rem; }
-      .heart-btn { font-size: 4.5rem; }
-      .love-message { font-size: 1.8rem; }
-    }
-
-    /* heart burst canvas for confetti (absolute) */
-    #heart-canvas {
+    /* canvas for heart burst (fixed) */
+    #heartBurstCanvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -238,312 +238,333 @@
       z-index: 9999;
       display: none;
     }
+
+    /* small screen adjustments */
+    @media (max-width: 450px) {
+      .heart-btn { font-size: 4.8rem; }
+      .love-message { font-size: 1.8rem; }
+      .gif-placeholder { width: 150px; height: 150px; font-size: 4rem; }
+    }
   </style>
 </head>
 <body>
-  <!-- background floating hearts (particles) -->
+  <!-- floating hearts background (static, performance friendly) -->
   <div class="floating-hearts" id="floatingHearts"></div>
 
-  <!-- main interactive area -->
-  <div class="game-wrapper">
+  <div class="game-container">
     <div class="status-panel">
-      <div class="remark" id="statusRemark">❤️‍🔥 Catch me?</div>
+      <div class="remark" id="statusRemark">💓 catch me?</div>
     </div>
 
-    <div class="hunting-zone" id="huntingZone">
-      <button class="heart-btn" id="fleeingHeart" aria-label="fleeing heart">❤️</button>
-    </div>
+    <!-- dedicated zone for heart movement -->
+    <div class="heart-zone" id="heartZone"></div>  <!-- heart button will be inside via DOM, but we attach to body? we'll manage -->
 
-    <!-- grand reveal card (glassmorphism) -->
+    <!-- reveal card (hidden initially) -->
     <div class="reveal-card" id="revealCard">
       <div class="love-message" id="loveMessage">you're my forever</div>
-      <div class="gif-placeholder" id="gifBox">💖🥺💖</div>
+      <div class="gif-placeholder" id="gifBox">🥰💕</div>
       <button class="replay-btn" id="replayBtn">again</button>
     </div>
   </div>
 
-  <!-- hidden canvas for heart burst -->
-  <canvas id="heart-canvas"></canvas>
+  <canvas id="heartBurstCanvas"></canvas>
 
   <script>
     (function() {
-      // -------------------- playful remarks array --------------------
+      // ----- PLAYLIST -----
       const remarks = [
-        "Too fast for you! 💨",
-        "Nice try! 😏",
-        "You're getting closer! 🔥",
-        "woosh~ missed!",
-        "nope, not today 💕",
-        "catch me if you can 🏃‍♂️",
-        "almost... but no ❤️‍🔥",
-        "faster, love! 💘",
-        "slippery heart!",
-        "😜 ha!",
-        "still running~",
-        "off I go!"
+        "Too fast! 💨", "Nice try 😏", "almost! 🔥", "woosh~", "nope 💕",
+        "catch me 🏃", "faster 💘", "slippery!", "off I go!", "😜 ha!"
       ];
 
-      // -------------------- love messages array (5) --------------------
       const loveMessages = [
-        "You're my favorite hello",
-        "my heart is yours forever",
-        "all of me loves all of you",
-        "endless love, infinite times",
-        "you're the piece I needed"
+        "my heart is yours",
+        "you're my favorite",
+        "all of me loves you",
+        "endless love",
+        "infinitely yours"
       ];
 
-      // DOM elements
-      const heart = document.getElementById('fleeingHeart');
+      // ----- DOM references -----
+      const heartBtn = document.createElement('button');
+      heartBtn.className = 'heart-btn';
+      heartBtn.id = 'fleeingHeart';
+      heartBtn.setAttribute('aria-label', 'fleeing heart');
+      heartBtn.innerHTML = '❤️';  // heart emoji
+
+      // We'll attach heart directly to body to avoid any clipping container, but we want it inside visual flow.
+      // Use fixed positioning relative to viewport for total freedom. And place inside game-container for semantic?
+      // But we need it to be able to go anywhere. So we attach to body, but keep it above everything.
+      document.body.appendChild(heartBtn);  // heart is now direct child of body, with fixed positioning
+
+      // style it fixed (already in CSS), but ensure high z-index
+      heartBtn.style.position = 'fixed';
+      heartBtn.style.zIndex = '1000';
+      heartBtn.style.left = '50%';
+      heartBtn.style.top = '50%';
+      heartBtn.style.transform = 'translate(-50%, -50%)';
+
+      // other elements
       const remarkEl = document.getElementById('statusRemark');
       const revealCard = document.getElementById('revealCard');
       const loveMsgEl = document.getElementById('loveMessage');
       const replayBtn = document.getElementById('replayBtn');
-      const huntingZone = document.getElementById('huntingZone');
-
-      // Game state
-      let escapeCount = 0;            // failed attempts (teleports)
-      const MAX_ESCAPES = 7;
-      let gamePhase = 'chasing';       // 'chasing' or 'yield' or 'reveal'
-      let canTeleport = true;          // after yield, disable teleport
-      let timeoutId = null;            // optional
-
-      // canvas references for heart burst
-      const canvas = document.getElementById('heart-canvas');
+      const canvas = document.getElementById('heartBurstCanvas');
       let ctx = canvas.getContext('2d');
-      let particles = [];
-      let animationFrame = null;
 
-      // ---------- utility: random position within viewport (keeping heart fully visible) ----------
-      function getRandomVisiblePosition() {
-        const heartRect = heart.getBoundingClientRect();
-        const heartWidth = heartRect.width;
-        const heartHeight = heartRect.height;
+      // ----- Game state -----
+      let escapeCount = 0;
+      const MAX_ESCAPES = 7;
+      let gamePhase = 'chasing';        // 'chasing', 'yield', 'reveal'
+      let canTeleport = true;
+      let teleportThrottle = false;      // prevent event flood
 
-        // safe zone boundaries (viewport minus element size)
-        const maxLeft = window.innerWidth - heartWidth;
-        const maxTop = window.innerHeight - heartHeight;
+      // ----- helper: get random visible fixed position (keeping emoji fully inside) -----
+      function getRandomPosition() {
+        const heartWidth = heartBtn.offsetWidth;
+        const heartHeight = heartBtn.offsetHeight;
 
-        // ensure we never go negative (clamp to 0) or overflow
-        const left = Math.max(0, Math.min(maxLeft, Math.random() * window.innerWidth));
-        const top = Math.max(0, Math.min(maxTop, Math.random() * window.innerHeight));
+        // fallback if offset is 0 (not rendered yet)
+        const w = heartWidth || 80;   // approximate
+        const h = heartHeight || 80;
 
+        const maxLeft = window.innerWidth - w;
+        const maxTop = window.innerHeight - h;
+
+        // ensure never negative or overflow
+        const left = Math.max(2, Math.min(maxLeft - 2, Math.random() * window.innerWidth));
+        const top = Math.max(2, Math.min(maxTop - 2, Math.random() * window.innerHeight));
         return { left, top };
       }
 
-      // ---------- place heart at random visible position ----------
+      // safely move heart (with throttle to avoid crazy stacking)
       function teleportHeart() {
-        if (!canTeleport || gamePhase !== 'chasing') return;
+        if (!canTeleport || gamePhase !== 'chasing' || teleportThrottle) return;
+        teleportThrottle = true;
+        const pos = getRandomPosition();
+        heartBtn.style.left = pos.left + 'px';
+        heartBtn.style.top = pos.top + 'px';
 
-        const pos = getRandomVisiblePosition();
-        heart.style.left = pos.left + 'px';
-        heart.style.top = pos.top + 'px';
-        // ensure heart is positioned absolute inside huntingZone? we use absolute inside wrapper? 
-        // heart is inside huntingZone which is relative. So we set relative to that container.
-        // But container huntingZone has no fixed height? better to attach to wrapper?
-        // To make it truly viewport-relative we need to use fixed? but then container may clip.
-        // EASIER: we position heart relative to viewport? but we want it inside the hunting zone area.
-        // To avoid clipping, we use viewport-absolute positioning but it will escape wrapper.
-        // That's okay for "flee" feeling! yes – the heart can fly anywhere on screen.
-        // But we also want the click to remain. We'll set .heart-btn to position: fixed?
-        // Buttons inside wrapper? Let's switch to fixed positioning so it can truly flee anywhere.
-        // Adjust CSS: .heart-btn { position: fixed; } and remove huntingZone relative.
-        // We'll modify inline.
+        // release throttle after short time (faster than human interactions)
+        setTimeout(() => { teleportThrottle = false; }, 40);  // 40ms cooldown
       }
 
-      // fix: change heart to fixed positioning dynamically? better update CSS directly.
-      // We'll apply style in script start.
-      heart.style.position = 'fixed';
-      heart.style.zIndex = '999'; // above most things
-      heart.style.left = '50%';
-      heart.style.top = '50%';
-      heart.style.transform = 'translate(-50%, -50%)'; // center initial
-
-      // update getRandomVisiblePosition remains fine (window relative)
-
-      // remark update
+      // random remark
       function setRandomRemark() {
-        const randomIdx = Math.floor(Math.random() * remarks.length);
-        remarkEl.innerText = remarks[randomIdx];
+        const idx = Math.floor(Math.random() * remarks.length);
+        remarkEl.innerText = remarks[idx];
       }
 
-      // flee handler (mouseenter / touchstart)
+      // ----- flee handler (works with both mouse and touch) -----
       function fleeHandler(e) {
-        e.preventDefault();   // avoid any default (like mouse selection)
-        if (gamePhase !== 'chasing') return;
-        if (!canTeleport) return;
+        // Prevent default to avoid scrolling or zoom
+        e.preventDefault();
+        if (gamePhase !== 'chasing' || !canTeleport) return;
 
+        // count escape
         escapeCount++;
         setRandomRemark();
 
-        // after MAX_ESCAPES, yield (stop moving, glow, special message)
         if (escapeCount >= MAX_ESCAPES) {
+          // YIELD MODE
           gamePhase = 'yield';
-          canTeleport = false;          // stop teleporting
-          heart.classList.add('yield');
-          remarkEl.innerText = '✨ You win! My heart is tired of running. Click it! ✨';
-          // heart remains at last position
+          canTeleport = false;
+          heartBtn.classList.add('yield');
+          remarkEl.innerText = '✨ You win! My heart is tired. Click it! ✨';
+          // keep heart at same position
         } else {
-          // teleport heart
-          const pos = getRandomVisiblePosition();
-          heart.style.left = pos.left + 'px';
-          heart.style.top = pos.top + 'px';
+          teleportHeart();  // move away
         }
       }
 
-      // final click handler (only when yield, then show reveal)
-      function heartFinalClick(e) {
+      // attach both mouseenter and touchstart (touch will fire multiple times but throttle will reduce)
+      heartBtn.addEventListener('mouseenter', fleeHandler);
+      heartBtn.addEventListener('touchstart', fleeHandler, { passive: false });
+
+      // ----- final click (only when yield) -----
+      function finalClickHandler(e) {
         if (gamePhase === 'yield') {
-          // trigger grand reveal
           gamePhase = 'reveal';
-          // stop flee events
           canTeleport = false;
 
-          // pick random love message
-          const randomLove = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-          loveMsgEl.innerText = randomLove;
+          // random love message
+          loveMsgEl.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
 
-          // show card
+          // show glass card
           revealCard.classList.add('show');
 
-          // massive heart burst (confetti)
+          // launch heart burst
           startHeartBurst();
 
-          // hide the heart? we can keep it but less intrusive
-          heart.style.opacity = '0.3';
-          heart.style.pointerEvents = 'none';
-          // optional remark
-          remarkEl.innerText = '❤️❤️❤️ forever! ❤️❤️❤️';
+          // fade heart a bit but keep visible
+          heartBtn.style.opacity = '0.35';
+          heartBtn.style.pointerEvents = 'none';   // avoid extra clicks
+
+          remarkEl.innerText = '❤️ forever yours ❤️';
         }
       }
+      heartBtn.addEventListener('click', finalClickHandler);
+      // for touch devices, click works but also add touchend to be safe
+      heartBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        if (gamePhase === 'yield') finalClickHandler(e);
+      });
 
-      // Replay: restart everything
+      // ----- replay -----
       function restartGame() {
         escapeCount = 0;
         gamePhase = 'chasing';
         canTeleport = true;
-        heart.classList.remove('yield');
-        heart.style.opacity = '1';
-        heart.style.pointerEvents = 'auto';
+        teleportThrottle = false;
+        heartBtn.classList.remove('yield');
+        heartBtn.style.opacity = '1';
+        heartBtn.style.pointerEvents = 'auto';
         revealCard.classList.remove('show');
-        remarkEl.innerText = '❤️‍🔥 Catch me?';
-        // initial heart position (center)
-        heart.style.left = '50%';
-        heart.style.top = '50%';
-        heart.style.transform = 'translate(-50%, -50%)'; // if needed, but fixed pos
-        // stop canvas animation
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-          animationFrame = null;
-        }
+
+        // reset heart to center (respecting bounds)
+        const centerLeft = (window.innerWidth / 2) - (heartBtn.offsetWidth / 2);
+        const centerTop = (window.innerHeight / 2) - (heartBtn.offsetHeight / 2);
+        heartBtn.style.left = Math.max(0, centerLeft) + 'px';
+        heartBtn.style.top = Math.max(0, centerTop) + 'px';
+
+        remarkEl.innerText = '💓 catch me?';
+
+        // clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.style.display = 'none';
-        particles = [];
+        if (burstFrame) cancelAnimationFrame(burstFrame);
+        burstFrame = null;
       }
+      replayBtn.addEventListener('click', restartGame);
+      replayBtn.addEventListener('touchend', (e) => { e.preventDefault(); restartGame(); });
 
-      // ---------- Heart burst / confetti (canvas) ----------
+      // ----- heart burst (confetti style) -----
+      let particles = [];
+      let burstFrame = null;
+
       function startHeartBurst() {
         canvas.style.display = 'block';
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // create 200 heart particles
-        for (let i = 0; i < 200; i++) {
+        particles = [];
+        for (let i = 0; i < 150; i++) {
           particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             vx: (Math.random() - 0.5) * 12,
-            vy: (Math.random() - 1.5) * 10 - 5, // mostly upward
-            size: Math.random() * 30 + 15,
-            opacity: Math.random() * 0.8 + 0.2,
-            heart: Math.random() > 0.3 ? '❤️' : '💖', // mix
+            vy: (Math.random() - 1) * 12 - 6,
+            size: Math.random() * 34 + 18,
+            opacity: Math.random() * 0.9 + 0.2,
+            char: Math.random() > 0.5 ? '❤️' : '💖',
           });
         }
 
-        function drawParticles() {
+        function draw() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          let alive = false;
+          let anyAlive = false;
           for (let p of particles) {
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.15; // gravity
+            p.vy += 0.2;   // gravity
             p.vx *= 0.99;
-            p.opacity *= 0.995;
-            if (p.y < canvas.height + 50 && p.opacity > 0.01) alive = true;
+            p.opacity *= 0.992;
+            if (p.y < canvas.height + 60 && p.opacity > 0.01) anyAlive = true;
 
-            ctx.font = `${p.size}px 'Segoe UI', 'Arial', sans-serif`;
+            ctx.font = `${p.size}px 'Segoe UI', 'Arial', 'Apple Color Emoji'`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.shadowColor = 'hotpink';
-            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#ffb0d0';
+            ctx.shadowBlur = 20;
             ctx.globalAlpha = p.opacity;
             ctx.fillStyle = 'white';
-            ctx.fillText(p.heart, p.x, p.y);
+            ctx.fillText(p.char, p.x, p.y);
           }
           ctx.shadowBlur = 0;
           ctx.globalAlpha = 1;
 
-          if (alive) {
-            animationFrame = requestAnimationFrame(drawParticles);
+          if (anyAlive) {
+            burstFrame = requestAnimationFrame(draw);
           } else {
             canvas.style.display = 'none';
             particles = [];
           }
         }
-        drawParticles();
+        draw();
       }
 
-      // Event listeners: mouseenter + touchstart (mobile)
-      heart.addEventListener('mouseenter', fleeHandler);
-      heart.addEventListener('touchstart', fleeHandler, { passive: false });
-
-      // final click
-      heart.addEventListener('click', heartFinalClick);
-
-      // Replay button
-      replayBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        restartGame();
-      });
-
-      // generate floating hearts (background particles)
+      // ----- background floating hearts generation (lightweight) -----
       function generateFloatingHearts(count = 18) {
         const container = document.getElementById('floatingHearts');
         for (let i = 0; i < count; i++) {
-          const span = document.createElement('span');
-          span.className = 'heart-particle';
-          span.innerText = Math.random() > 0.5 ? '❤️' : '💗';
-          span.style.left = Math.random() * 100 + '%';
-          span.style.animationDelay = Math.random() * 12 + 's';
-          span.style.animationDuration = (Math.random() * 8 + 8) + 's'; // 8-16s
-          span.style.fontSize = (Math.random() * 30 + 20) + 'px';
-          container.appendChild(span);
+          const heart = document.createElement('span');
+          heart.className = 'heart-particle';
+          heart.innerText = ['❤️', '💗', '💕', '💓'][Math.floor(Math.random() * 4)];
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.animationDelay = Math.random() * 12 + 's';
+          heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+          heart.style.fontSize = (Math.random() * 28 + 18) + 'px';
+          container.appendChild(heart);
         }
       }
-      generateFloatingHearts(22);
+      generateFloatingHearts(20);
 
-      // ensure canvas resizes with window
+      // ----- window resize: ensure heart stays within bounds, and adjust canvas-----
       window.addEventListener('resize', () => {
+        if (gamePhase === 'chasing' || gamePhase === 'yield') {
+          // if heart is out of new bounds, reposition gently (only if needed)
+          const rect = heartBtn.getBoundingClientRect();
+          const tol = 5;
+          if (rect.right > window.innerWidth + tol || rect.left < -tol || rect.bottom > window.innerHeight + tol || rect.top < -tol) {
+            // teleport to safe spot, but only if chasing & canTeleport, else clamp?
+            if (gamePhase === 'chasing' && canTeleport) {
+              const pos = getRandomPosition();
+              heartBtn.style.left = pos.left + 'px';
+              heartBtn.style.top = pos.top + 'px';
+            } else if (gamePhase === 'yield') {
+              // clamp to visible (soft)
+              const newLeft = Math.min(window.innerWidth - rect.width, Math.max(0, rect.left));
+              const newTop = Math.min(window.innerHeight - rect.height, Math.max(0, rect.top));
+              heartBtn.style.left = newLeft + 'px';
+              heartBtn.style.top = newTop + 'px';
+            }
+          }
+        }
         if (canvas.style.display === 'block') {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
         }
-        // if heart is in fleeing phase and visible, we may re-teleport? but don't auto teleport on resize, keep pos.
       });
 
-      // also detect bounds on flee, but teleport already uses viewport dimensions at call moment.
-
-      // disable context menu on heart
-      heart.addEventListener('contextmenu', (e) => e.preventDefault());
-
-      // extra safety: for touch devices, avoid page zoom when double tapping heart
-      heart.addEventListener('touchstart', (e) => {
-        if (gamePhase === 'chasing') e.preventDefault();
+      // extra safety for touch: prevent page move on heart zone (but heart is fixed)
+      document.body.addEventListener('touchmove', (e) => {
+        if (e.target === heartBtn) e.preventDefault();
       }, { passive: false });
 
-      // initial heart position at center (already)
-      heart.style.left = '50%';
-      heart.style.top = '50%';
-      heart.style.transform = 'translate(-50%, -50%)';
+      // ensure initial heart center
+      function setInitialHeartPos() {
+        const left = (window.innerWidth / 2) - (heartBtn.offsetWidth / 2);
+        const top = (window.innerHeight / 2) - (heartBtn.offsetHeight / 2);
+        heartBtn.style.left = Math.max(2, left) + 'px';
+        heartBtn.style.top = Math.max(2, top) + 'px';
+      }
+      setInitialHeartPos();
+      // fallback for images not loaded
+      window.addEventListener('load', setInitialHeartPos);
+
+      // disable context menu on heart
+      heartBtn.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      // small throttle for touch events to avoid double count
+      let touchGuard = false;
+      heartBtn.addEventListener('touchstart', (e) => {
+        if (!touchGuard) {
+          touchGuard = true;
+          setTimeout(() => { touchGuard = false; }, 100);
+        } else {
+          e.preventDefault();  // ignore rapid extra touches
+        }
+      }, { passive: false });
     })();
   </script>
 </body>
