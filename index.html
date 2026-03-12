@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entra no meu coração</title>
+    <title>Pega o Coração!</title>
     <style>
         body {
             margin: 0;
@@ -17,30 +17,27 @@
             font-family: 'Arial Black', sans-serif;
             overflow: hidden;
             text-align: center;
+            position: relative;
         }
 
-        #mensagem {
+        #instrucao {
             color: black;
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             z-index: 10;
             padding: 0 20px;
-            min-height: 120px; /* Evita que o layout pule */
         }
 
-        /* O botão de coração */
+        /* O botão de coração que foge */
         .btn-coracao {
             font-size: 5rem;
             background: none;
             border: none;
             cursor: pointer;
             z-index: 10;
-            transition: transform 0.2s;
+            position: absolute; /* Essencial para mover o botão */
+            transition: all 0.1s ease; /* Transição rápida para o movimento */
             animation: pulsar 1.5s infinite;
-        }
-
-        .btn-coracao:active {
-            transform: scale(0.8);
         }
 
         @keyframes pulsar {
@@ -49,8 +46,50 @@
             100% { transform: scale(1); }
         }
 
+        /* Área para as mensagens fofas e imagens */
+        #conteudo-final {
+            display: none; /* Começa escondido */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #mensagem-final {
+            color: #8f44ad;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .imagem-fofa {
+            max-width: 80%;
+            max-height: 50vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        #btn-reiniciar {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background-color: #ff75c3;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
+        }
+
         /* Corações flutuantes de fundo */
-        .heart {
+        .heart-bg {
             position: absolute;
             color: rgba(255, 255, 255, 0.4);
             font-size: 20px;
@@ -67,60 +106,39 @@
 </head>
 <body>
 
-    <div id="mensagem">CLIQUE NO CORAÇÃO...</div>
-    
-    <button class="btn-coracao" onclick="proximaMensagem()">❤️</button>
+    <div id="jogo">
+        <div id="instrucao">TENTE PEGAR MEU CORAÇÃO! ❤️</div>
+        <button id="coracao-foge" class="btn-coracao">❤️</button>
+    </div>
+
+    <div id="conteudo-final">
+        <div id="mensagem-final"></div>
+        <img id="imagem-fofa" class="imagem-fofa" src="" alt="Imagem Fofa">
+        <button id="btn-reiniciar" onclick="reiniciarJogo()">Tentar de Novo?</button>
+    </div>
 
     <script>
-        const frases = [
-            "SÓ VOCÊ ESTÁ NO MEU CORAÇÃO",
-            "VOCÊ É A MELHOR PARTE DO MEU DIA",
-            "CADA CLIQUE É UM POUCO MAIS DE AMOR",
-            "NÃO DÁ PRA EXPLICAR, SÓ SENTIR...",
-            "VOCÊ É O MEU LUGAR FAVORITO",
-            "O SITE É SIMPLES, MAS O SENTIMENTO É GRANDE!",
-            "TÁ GOSTANDO? CLICA MAIS UMA VEZ! 😉"
+        const btnCoracao = document.getElementById('coracao-foge');
+        const jogoArea = document.getElementById('jogo');
+        const conteudoFinal = document.getElementById('conteudo-final');
+        const mensagemFinal = document.getElementById('mensagem-final');
+        const imagemFofa = document.getElementById('imagem-fofa');
+        const instrucao = document.getElementById('instrucao');
+
+        let tentativas = 0;
+        const maxTentativas = 5; // Número de vezes que o coração foge antes de deixar clicar
+        let jogoAtivo = true;
+
+        const mensagensLindas = [
+            "VOCÊ CONSEGUIU! MEU CORAÇÃO É SEU!",
+            "SÓ VOCÊ TEM A CHAVE DO MEU CORAÇÃO!",
+            "VOCÊ É A PESSOA MAIS ESPECIAL DO MUNDO!",
+            "CADA SEGUNDO COM VOCÊ É UM PRESENTE!",
+            "MEU AMOR POR VOCÊ SÓ CRESCE!",
+            "VOCÊ É O MEU FELIZ PARA SEMPRE!"
         ];
 
-        let indice = 0;
-
-        function proximaMensagem() {
-            const texto = document.getElementById('mensagem');
-            
-            // Muda a frase
-            indice = (indice + 1) % frases.length;
-            texto.innerText = frases[indice];
-
-            // Cria um efeito de explosão de coração no clique
-            for(let i=0; i<5; i++) {
-                createHeart(true);
-            }
-        }
-
-        function createHeart(isClick = false) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            
-            if(isClick) {
-                // Se for clique, nasce perto do centro
-                heart.style.left = (45 + Math.random() * 10) + 'vw';
-                heart.style.bottom = '50vh';
-                heart.style.color = 'white';
-                heart.style.fontSize = '30px';
-            } else {
-                // Se for fundo, nasce embaixo
-                heart.style.left = Math.random() * 100 + 'vw';
-            }
-
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            document.body.appendChild(heart);
-
-            setTimeout(() => { heart.remove(); }, 5000);
-        }
-
-        // Corações automáticos de fundo
-        setInterval(() => createHeart(false), 500);
-    </script>
-</body>
-</html>
+        const imagensFofas = [
+            "https://i.pinimg.com/originals/e0/fd/25/e0fd25f9127a9a1098b064c2f88f4021.gif", // GIF de gatinho fofo
+            "https://i.pinimg.com/originals/9f/6e/c3/9f6ec32a188f8b8979e26241a0b9868a.gif", // GIF de urso fofo
+            "
