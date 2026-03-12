@@ -9,33 +9,54 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* Fundo degradê Rosa e Roxo */
             background: linear-gradient(135deg, #ff75c3, #8f44ad);
             font-family: 'Arial Black', sans-serif;
             overflow: hidden;
-            position: relative;
-        }
-
-        h1 {
-            color: black;
-            font-size: 4rem;
             text-align: center;
-            z-index: 10;
-            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
-            padding: 20px;
         }
 
-        /* Estilo dos corações flutuantes */
+        #mensagem {
+            color: black;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            z-index: 10;
+            padding: 0 20px;
+            min-height: 120px; /* Evita que o layout pule */
+        }
+
+        /* O botão de coração */
+        .btn-coracao {
+            font-size: 5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s;
+            animation: pulsar 1.5s infinite;
+        }
+
+        .btn-coracao:active {
+            transform: scale(0.8);
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Corações flutuantes de fundo */
         .heart {
             position: absolute;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 20px;
-            user-select: none;
             animation: float 6s linear infinite;
             bottom: -50px;
+            z-index: 1;
         }
 
         @keyframes float {
@@ -46,24 +67,60 @@
 </head>
 <body>
 
-    <h1>SÓ VOCÊ ESTÁ NO MEU CORAÇÃO</h1>
+    <div id="mensagem">CLIQUE NO CORAÇÃO...</div>
+    
+    <button class="btn-coracao" onclick="proximaMensagem()">❤️</button>
 
     <script>
-        function createHeart() {
+        const frases = [
+            "SÓ VOCÊ ESTÁ NO MEU CORAÇÃO",
+            "VOCÊ É A MELHOR PARTE DO MEU DIA",
+            "CADA CLIQUE É UM POUCO MAIS DE AMOR",
+            "NÃO DÁ PRA EXPLICAR, SÓ SENTIR...",
+            "VOCÊ É O MEU LUGAR FAVORITO",
+            "O SITE É SIMPLES, MAS O SENTIMENTO É GRANDE!",
+            "TÁ GOSTANDO? CLICA MAIS UMA VEZ! 😉"
+        ];
+
+        let indice = 0;
+
+        function proximaMensagem() {
+            const texto = document.getElementById('mensagem');
+            
+            // Muda a frase
+            indice = (indice + 1) % frases.length;
+            texto.innerText = frases[indice];
+
+            // Cria um efeito de explosão de coração no clique
+            for(let i=0; i<5; i++) {
+                createHeart(true);
+            }
+        }
+
+        function createHeart(isClick = false) {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            
+            if(isClick) {
+                // Se for clique, nasce perto do centro
+                heart.style.left = (45 + Math.random() * 10) + 'vw';
+                heart.style.bottom = '50vh';
+                heart.style.color = 'white';
+                heart.style.fontSize = '30px';
+            } else {
+                // Se for fundo, nasce embaixo
+                heart.style.left = Math.random() * 100 + 'vw';
+            }
+
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
             document.body.appendChild(heart);
 
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
+            setTimeout(() => { heart.remove(); }, 5000);
         }
-        setInterval(createHeart, 300);
-    </script>
 
+        // Corações automáticos de fundo
+        setInterval(() => createHeart(false), 500);
+    </script>
 </body>
 </html>
