@@ -1,36 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <title>Para Você ❤️</title>
     
-    <!-- Google Fonts: Poppins for a modern, playful look -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- RESET & BASE STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none; /* Prevent text selection during frantic clicking */
-        }
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Prevent scrollbars */
+            overflow: hidden;
             height: 100vh;
             width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Dynamic Animated Gradient Background */
             background: linear-gradient(-45deg, #8f44ad, #ff75c3, #4a00e0, #ff0055);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: white;
         }
 
@@ -40,12 +34,12 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- FLOATING BACKGROUND PARTICLES --- */
+        /* --- BACKGROUND PARTICLES --- */
         .particle {
             position: absolute;
             color: rgba(255, 255, 255, 0.4);
             font-size: 1.5rem;
-            pointer-events: none; /* Let clicks pass through */
+            pointer-events: none;
             animation: floatUp linear infinite;
             z-index: 0;
         }
@@ -79,24 +73,22 @@
             transition: opacity 0.3s;
         }
 
-        /* The Fleeing Heart */
+        /* O Coração */
         #target-heart {
             font-size: 5rem;
-            cursor: pointer;
             position: absolute;
-            transition: transform 0.1s ease; /* Slight smoothness for movement */
+            cursor: pointer;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
             z-index: 20;
-            /* Center initially */
+            /* Centralizado inicialmente */
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
         }
 
-        /* Pulsing Animation */
-        .pulsing {
-            animation: pulse 1.5s infinite;
-        }
+        /* Animação de Pulsar */
+        .pulsing { animation: pulse 1.5s infinite; }
 
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
@@ -104,7 +96,17 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* The "Tired" State (Glowing) */
+        /* Animação de Tremida (quando foge) */
+        .shake { animation: shake 0.5s; }
+
+        @keyframes shake {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) rotate(-10deg); }
+            75% { transform: translate(-50%, -50%) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+
+        /* Estado "Cansado" (Glow) */
         .tired {
             animation: intenseGlow 0.5s infinite alternate;
             filter: drop-shadow(0 0 20px #ff75c3);
@@ -115,13 +117,10 @@
             to { transform: translate(-50%, -50%) scale(1.3); }
         }
 
-        /* --- GRAND REVEAL CARD (Glassmorphism) --- */
+        /* --- REVEAL CARD (Glassmorphism) --- */
         #reveal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -134,10 +133,7 @@
             transition: opacity 0.8s ease;
         }
 
-        #reveal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        #reveal-overlay.active { opacity: 1; pointer-events: all; }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.15);
@@ -154,9 +150,7 @@
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        #reveal-overlay.active .glass-card {
-            transform: scale(1);
-        }
+        #reveal-overlay.active .glass-card { transform: scale(1); }
 
         .love-message {
             font-size: 1.4rem;
@@ -186,23 +180,16 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .replay-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
-        }
+        .replay-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4); }
 
-        /* --- CONFETTI CANVAS --- */
+        /* Confetti Canvas */
         #confetti-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 50;
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 600px) {
             #target-heart { font-size: 4rem; }
             #status-text { font-size: 1.1rem; top: 5%; }
@@ -211,71 +198,55 @@
 </head>
 <body>
 
-    <!-- Background Particles Container -->
     <div id="particles-container"></div>
-
-    <!-- Confetti Canvas -->
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Game Area -->
     <div id="game-container">
-        <div id="status-text">Catch my heart! ❤️</div>
+        <div id="status-text">Tente pegar meu coração! ❤️</div>
         <div id="target-heart" class="pulsing">❤️</div>
     </div>
 
-    <!-- Grand Reveal Overlay -->
     <div id="reveal-overlay">
         <div class="glass-card">
-            <div class="love-message" id="love-msg">Loading...</div>
-            <!-- Cute animated GIF placeholder -->
+            <div class="love-message" id="love-msg">...</div>
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eW55eW55eW55eW55eW55eW55eW55eW55eW55eW55eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRv0ThflsHCqDrG/giphy.gif" alt="Cute Bear Hug" class="cute-gif">
             <button class="replay-btn" onclick="resetGame()">Replay</button>
         </div>
     </div>
 
     <script>
-        /**
-         * CONFIGURATION & STATE
-         */
+        // --- CONFIGURAÇÃO ---
         const MAX_ATTEMPTS = 7;
         let attempts = 0;
         let isWon = false;
-        
-        // DOM Elements
+
+        // Elementos DOM
         const heart = document.getElementById('target-heart');
         const statusText = document.getElementById('status-text');
         const revealOverlay = document.getElementById('reveal-overlay');
         const loveMsgEl = document.getElementById('love-msg');
         const particlesContainer = document.getElementById('particles-container');
 
-        // Messages
+        // Mensagens
         const messages = [
-            "You win! My heart is tired of running. Click it!",
-            "Okay, okay! You caught me! ❤️",
-            "You're persistent! I like that. Click me!",
-            "Fine, you win. Don't let it go! 💖",
-            "My heart belongs to you now. Click to claim it!"
+            "Muito rápido!", "Boa tentativa!", "Quase lá!", "Tão perto!", "Quase pegou!"
         ];
-
+        
         const romanticMessages = [
-            "You make my world brighter just by being in it.",
-            "Every moment with you is a treasure I cherish.",
-            "You are the missing piece to my puzzle.",
-            "My heart beats faster every time I see your name.",
-            "I love you more than words can say."
+            "Você ilumina meu mundo só por estar nele.",
+            "Cada momento com você é um tesouro.",
+            "Você é a peça que faltava no meu quebra-cabeça.",
+            "Meu coração dispara toda vez que vejo seu nome.",
+            "Eu te amo mais do que palavras podem dizer."
         ];
 
-        /**
-         * INITIALIZATION
-         */
+        // --- INICIALIZAÇÃO ---
         function init() {
             createFloatingParticles();
             setupEventListeners();
         }
 
-        /**
-         * BACKGROUND PARTICLE SYSTEM
-         */
+        // --- PARTÍCULAS DE FUNDO ---
         function createFloatingParticles() {
             const particleCount = 20;
             for (let i = 0; i < particleCount; i++) {
@@ -283,49 +254,53 @@
                 p.classList.add('particle');
                 p.innerHTML = Math.random() > 0.5 ? '❤️' : '✨';
                 p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDuration = (Math.random() * 5 + 5) + 's'; // 5-10s duration
+                p.style.animationDuration = (Math.random() * 5 + 5) + 's';
                 p.style.fontSize = (Math.random() * 1 + 0.5) + 'rem';
                 particlesContainer.appendChild(p);
             }
         }
 
-        /**
-         * GAME LOGIC: THE ESCAPE
-         */
+        // --- LÓGICA DO JOGO ---
         function setupEventListeners() {
-            // Desktop: Mouseover
-            heart.addEventListener('mouseover', () => {
-                if (!isWon) moveHeart();
-            });
-
-            // Mobile: Touchstart (prevents delay)
-            heart.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevent click
-                if (!isWon) moveHeart();
+            // Usamos 'pointerdown' para funcionar melhor em mobile e desktop
+            heart.addEventListener('pointerdown', (e) => {
+                e.preventDefault(); // Evita comportamento padrão de toque
+                
+                if (isWon) {
+                    // Se já venceu, apenas dispara o clique normal
+                    heart.click();
+                } else {
+                    // Se ainda não venceu, faz ele fugir
+                    moveHeart();
+                }
             });
         }
 
         function moveHeart() {
             attempts++;
             
-            // 1. Update Status Text
+            // Atualiza texto
             if (attempts < MAX_ATTEMPTS) {
-                const remarks = ["Too fast!", "Nice try!", "Closer!", "So close!", "Almost there!"];
-                const remark = remarks[Math.min(attempts - 1, remarks.length - 1)];
+                const remark = messages[Math.min(attempts - 1, messages.length - 1)];
                 statusText.innerText = `${remark} (${attempts}/${MAX_ATTEMPTS})`;
             }
 
-            // 2. Calculate New Position
-            // We use viewport units to ensure it stays on screen
-            const x = Math.random() * (window.innerWidth - 100); // -100 for padding
+            // Adiciona efeito de tremida
+            heart.classList.remove('shake');
+            void heart.offsetWidth; // Trigger reflow
+            heart.classList.add('shake');
+
+            // Calcula nova posição aleatória
+            // Subtraímos 100px para garantir que não saia da tela
+            const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 100);
 
-            // 3. Apply Position
+            // Aplica nova posição
             heart.style.left = `${x}px`;
             heart.style.top = `${y}px`;
-            heart.style.transform = 'translate(0, 0)'; // Reset transform from centering
+            heart.style.transform = 'translate(0, 0)'; // Remove o centralizador
 
-            // 4. Check for Yield Condition
+            // Verifica se deve parar
             if (attempts >= MAX_ATTEMPTS) {
                 yieldHeart();
             }
@@ -333,114 +308,57 @@
 
         function yieldHeart() {
             isWon = true;
-            statusText.style.display = 'none'; // Hide status text
+            statusText.style.display = 'none';
             heart.classList.remove('pulsing');
             heart.classList.add('tired');
-            heart.innerText = "💖"; // Change emoji slightly
-            heart.style.cursor = "pointer";
+            heart.innerText = "💖";
             
-            // Change text to invite click
-            statusText.innerText = "You win! Click me!";
+            // Texto final
+            statusText.innerText = "Você venceu! Clique aqui!";
             statusText.style.display = 'block';
             statusText.style.top = '15%';
             statusText.style.fontSize = '1.2rem';
             statusText.style.color = '#ff75c3';
-
-            // Add click listener for the final reveal
-            heart.addEventListener('click', triggerReveal);
         }
 
-        /**
-         * GRAND REVEAL
-         */
-        function triggerReveal() {
-            // 1. Stop heart from moving (remove listeners)
-            heart.removeEventListener('click', triggerReveal);
-            heart.removeEventListener('mouseover', moveHeart);
-            heart.removeEventListener('touchstart', moveHeart);
+        // --- REVELAÇÃO ---
+        heart.addEventListener('click', triggerReveal);
 
-            // 2. Trigger Confetti
+        function triggerReveal() {
+            if (!isWon) return;
+
+            // Remove listeners para evitar bugs
+            heart.removeEventListener('click', triggerReveal);
+            heart.removeEventListener('pointerdown', moveHeart);
+
+            // Confetti
             startConfetti();
 
-            // 3. Pick Random Message & Image
+            // Mensagem Aleatória
             const randomMsg = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
             loveMsgEl.innerText = randomMsg;
 
-            // 4. Show Card
+            // Mostra o cartão
             revealOverlay.classList.add('active');
         }
 
-        /**
-         * REPLAY FUNCTION
-         */
+        // --- REPLAY ---
         function resetGame() {
-            // Reset State
             attempts = 0;
             isWon = false;
             
-            // Reset UI
             revealOverlay.classList.remove('active');
             heart.classList.remove('tired');
             heart.classList.add('pulsing');
             heart.innerText = "❤️";
+            
             statusText.style.display = 'block';
-            statusText.innerText = "Catch my heart! ❤️";
+            statusText.innerText = "Tente pegar meu coração! ❤️";
             statusText.style.color = 'white';
             statusText.style.top = '10%';
             statusText.style.fontSize = '1.5rem';
 
-            // Reset Heart Position
+            // Reseta posição
             heart.style.left = '50%';
             heart.style.top = '50%';
-            heart.style.transform = 'translate(-50%, -50%)';
-
-            // Re-setup listeners
-            setupEventListeners();
-        }
-
-        /**
-         * SIMPLE CONFETTI ENGINE (Canvas)
-         */
-        function startConfetti() {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const colors = ['#ff75c3', '#8f44ad', '#ffffff', '#ff0055'];
-
-            // Create particles
-            for (let i = 0; i < 150; i++) {
-                particles.push({
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2,
-                    w: Math.random() * 10 + 5,
-                    h: Math.random() * 10 + 5,
-                    vx: (Math.random() - 0.5) * 20,
-                    vy: (Math.random() - 0.5) * 20,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    gravity: 0.5,
-                    drag: 0.96
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let activeParticles = false;
-
-                particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += p.gravity;
-                    p.vx *= p.drag;
-                    p.vy *= p.drag;
-
-                    if (p.y < canvas.height) {
-                        activeParticles = true;
-                        ctx.fillStyle = p.color;
-                        ctx.fillRect(p.x, p.y, p.w, p.h);
-                    }
-                });
-
-                if (activeParticles)
+            heart.style.transform
