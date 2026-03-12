@@ -4,14 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Você ❤️</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
     <style>
-        /* --- RESET & BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
         body {
@@ -34,7 +28,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- BACKGROUND PARTICLES --- */
+        /* Partículas de fundo */
         .particle {
             position: absolute;
             color: rgba(255, 255, 255, 0.4);
@@ -46,11 +40,10 @@
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            20% { opacity: 0.6; }
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        /* --- GAME UI --- */
+        /* Container do Jogo */
         #game-container {
             position: relative;
             width: 100%;
@@ -73,7 +66,7 @@
             transition: opacity 0.3s;
         }
 
-        /* O Coração */
+        /* O Coração - O Segredo da Suavidade */
         #target-heart {
             font-size: 5rem;
             position: absolute;
@@ -84,10 +77,12 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
+            
+            /* AQUI ESTÁ A MÁGICA: Transição suave */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Animação de Pulsar */
+        /* Animação de Pulsar (Estado Inicial) */
         .pulsing { animation: pulse 1.5s infinite; }
 
         @keyframes pulse {
@@ -96,20 +91,11 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Animação de Tremida (quando foge) */
-        .shake { animation: shake 0.5s; }
-
-        @keyframes shake {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            25% { transform: translate(-50%, -50%) rotate(-10deg); }
-            75% { transform: translate(-50%, -50%) rotate(10deg); }
-            100% { transform: translate(-50%, -50%) rotate(0deg); }
-        }
-
         /* Estado "Cansado" (Glow) */
         .tired {
             animation: intenseGlow 0.5s infinite alternate;
             filter: drop-shadow(0 0 20px #ff75c3);
+            cursor: pointer;
         }
 
         @keyframes intenseGlow {
@@ -260,7 +246,7 @@
             }
         }
 
-        // --- LÓGICA DO JOGO ---
+        // --- LÓGICA DO JOGO (A MÁGICA) ---
         function setupEventListeners() {
             // Usamos 'pointerdown' para funcionar melhor em mobile e desktop
             heart.addEventListener('pointerdown', (e) => {
@@ -285,10 +271,8 @@
                 statusText.innerText = `${remark} (${attempts}/${MAX_ATTEMPTS})`;
             }
 
-            // Adiciona efeito de tremida
-            heart.classList.remove('shake');
-            void heart.offsetWidth; // Trigger reflow
-            heart.classList.add('shake');
+            // Muda a expressão para "assustado"
+            heart.innerText = "😰";
 
             // Calcula nova posição aleatória
             // Subtraímos 100px para garantir que não saia da tela
@@ -296,9 +280,8 @@
             const y = Math.random() * (window.innerHeight - 100);
 
             // Aplica nova posição
-            heart.style.left = `${x}px`;
-            heart.style.top = `${y}px`;
-            heart.style.transform = 'translate(0, 0)'; // Remove o centralizador
+            // Usamos translate para manter a performance alta
+            heart.style.transform = `translate(${x}px, ${y}px)`;
 
             // Verifica se deve parar
             if (attempts >= MAX_ATTEMPTS) {
@@ -359,6 +342,67 @@
             statusText.style.fontSize = '1.5rem';
 
             // Reseta posição
-            heart.style.left = '50%';
-            heart.style.top = '50%';
-            heart.style.transform
+            heart.style.transform = 'translate(-50%, -50%)';
+
+            // Re-setup listeners
+            setupEventListeners();
+        }
+
+        // --- CONFETTI ENGINE ---
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#ff75c3', '#8f44ad', '#ffffff', '#ff0055'];
+
+            // Criar partículas
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 0.5) * 20,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    gravity: 0.5,
+                    drag: 0.96
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let activeParticles = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.vx *= p.drag;
+                    p.vy *= p.drag;
+
+                    if (p.y < canvas.height) {
+                        activeParticles = true;
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(p.x, p.y, p.w, p.h);
+                    }
+                });
+
+                if (activeParticles) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            animate();
+        }
+
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>
