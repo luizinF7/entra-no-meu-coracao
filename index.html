@@ -2,67 +2,68 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pega o Coração!</title>
     <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            height: 100vh; width: 100vw;
             background: linear-gradient(135deg, #ff75c3, #8f44ad);
-            font-family: 'Arial Black', sans-serif;
-            overflow: hidden;
-            position: relative;
+            font-family: sans-serif;
+            overflow: hidden; /* Impede que a tela balance ou role */
+            position: fixed; /* Trava o fundo no mobile */
         }
 
         #instrucao {
-            color: black;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
             z-index: 5;
-            text-shadow: 1px 1px 5px rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            pointer-events: none; /* Não atrapalha o clique */
+            padding: 20px;
         }
 
-        /* O botão de coração */
         .btn-coracao {
-            font-size: 5rem;
-            background: none;
-            border: none;
+            font-size: 4rem;
+            background: none; border: none;
             cursor: pointer;
             z-index: 100;
-            position: absolute; /* Obrigatório para o movimento funcionar */
-            top: 50%;
-            left: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            transition: all 0.2s ease; /* Faz o movimento ser suave */
+            transition: all 0.15s ease-out;
+            display: block;
         }
 
         #conteudo-final {
             display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; align-items: center;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            z-index: 200;
+            background: white; z-index: 200;
+            padding: 20px;
         }
 
         .imagem-fofa {
-            max-width: 80%;
+            max-width: 90%;
             border-radius: 15px;
             margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .heart-bg {
             position: absolute;
             color: rgba(255, 255, 255, 0.3);
-            animation: float 6s linear infinite;
+            animation: float 5s linear infinite;
             bottom: -50px;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -77,59 +78,66 @@
     <button id="coracao-foge" class="btn-coracao">❤️</button>
 
     <div id="conteudo-final">
-        <h1 style="color: #8f44ad; padding: 20px;">VOCÊ ME PEGOU! ❤️</h1>
-        <p style="font-size: 1.2rem;">SÓ VOCÊ ESTÁ NO MEU CORAÇÃO!</p>
-        <img class="imagem-fofa" src="https://i.pinimg.com/originals/e0/fd/25/e0fd25f9127a9a1098b064c2f88f4021.gif">
-        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">Recomeçar</button>
+        <h1 style="color: #8f44ad; text-align: center;">VOCÊ ME PEGOU! ❤️</h1>
+        <p style="font-size: 1.1rem; text-align: center;">SÓ VOCÊ ESTÁ NO MEU CORAÇÃO!</p>
+        <img class="imagem-fofa" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K1TQa8wwqqUyc/giphy.gif">
+        <button onclick="location.reload()" style="padding: 12px 25px; border-radius: 20px; background: #ff75c3; color: white; border: none; font-weight: bold;">Recomeçar</button>
     </div>
 
     <script>
         const btn = document.getElementById('coracao-foge');
+        const instrucao = document.getElementById('instrucao');
         let tentativas = 0;
-        const limiteFuga = 6; // Ele foge 6 vezes
+        const limiteFuga = 5; 
 
-        function desviar() {
+        function mover(e) {
             if (tentativas < limiteFuga) {
-                // Calcula posições aleatórias
-                const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-                const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-                
-                // Aplica a nova posição
-                btn.style.left = x + 'px';
-                btn.style.top = y + 'px';
-                btn.style.transform = 'none'; // Remove o centralizador inicial
+                // Impede o comportamento padrão do toque para não travar
+                if(e) e.preventDefault();
+
+                // Calcula área disponível (janela menos tamanho do botão)
+                const maxX = window.innerWidth - btn.offsetWidth;
+                const maxY = window.innerHeight - btn.offsetHeight;
+
+                // Gera posições dentro do limite visível
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
+
+                btn.style.left = newX + 'px';
+                btn.style.top = newY + 'px';
+                btn.style.transform = 'none'; // Importante para mobile
                 
                 tentativas++;
-            } else {
-                // Para de fugir e deixa clicar
-                document.getElementById('instrucao').innerText = "OK, VOCÊ VENCEU! CLICA AGORA! ❤️";
-                btn.style.filter = "drop-shadow(0 0 10px gold)";
+                
+                if (tentativas >= limiteFuga) {
+                    instrucao.innerText = "OK, VOCÊ VENCEU! CLICA AGORA! ❤️";
+                    btn.style.transition = "transform 0.3s";
+                    btn.style.filter = "drop-shadow(0 0 15px gold)";
+                }
             }
         }
 
-        // Eventos para fugir
-        btn.addEventListener('mouseover', desviar); // No PC (passar o mouse)
-        btn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Evita o clique acidental no mobile
-            desviar();
-        });
+        // Eventos Mobile e PC
+        btn.addEventListener('touchstart', mover, {passive: false});
+        btn.addEventListener('mouseover', mover);
 
-        // Evento de clique final
+        // Clique para abrir o prêmio
         btn.addEventListener('click', () => {
             if (tentativas >= limiteFuga) {
                 document.getElementById('conteudo-final').style.display = 'flex';
             }
         });
 
-        // Corações de fundo
+        // Corações de fundo (menos frequência para não travar celular fraco)
         setInterval(() => {
             const h = document.createElement('div');
             h.classList.add('heart-bg');
             h.innerHTML = '❤️';
             h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
             document.body.appendChild(h);
-            setTimeout(() => h.remove(), 6000);
-        }, 500);
+            setTimeout(() => h.remove(), 5000);
+        }, 800);
     </script>
 </body>
 </html>
