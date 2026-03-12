@@ -1,47 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Heart Catch · smooth mobile & desktop</title>
-  <!-- Google Fonts: bold & playful -->
+  <title>Heart Catch · versão PT · suave</title>
+  <!-- Google Fonts: bold e moderno -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    /* ----- RESET & full bleed, mobile optimized ----- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent; /* kill flash on tap */
+      -webkit-tap-highlight-color: transparent;
       user-select: none;
       -webkit-touch-callout: none;
     }
 
     body {
       min-height: 100vh;
-      min-height: -webkit-fill-available; /* better for mobile safari */
-      background: linear-gradient(135deg, #8f44ad, #ff75c3, #b84a8c, #ff75c3);
-      background-size: 400% 400%;
-      animation: gradientFlow 14s ease infinite;
+      min-height: -webkit-fill-available;
+      background: linear-gradient(145deg, #8f44ad, #ff75c3, #b84a8c, #ff75c3);
+      background-size: 300% 300%;
+      animation: gradientBR 16s ease infinite;
       font-family: 'Poppins', 'Montserrat', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow-x: hidden;
-      overflow-y: auto; /* allow small scroll if needed, but we contain */
-      touch-action: pan-y pinch-zoom; /* prevents pull-to-refresh while allowing scroll */
+      touch-action: pan-y pinch-zoom; /* permite rolagem vertical suave */
     }
 
-    @keyframes gradientFlow {
+    @keyframes gradientBR {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    /* floating heart particles – lightweight CSS only, no extra paint */
+    /* PARTÍCULAS DE CORAÇÃO - sem overlap graças a posições aleatórias e tamanhos variados */
     .floating-hearts {
       position: fixed;
       top: 0;
@@ -55,125 +53,121 @@
 
     .heart-particle {
       position: absolute;
-      color: rgba(255, 240, 250, 0.8);
-      font-size: 1.6rem;
+      color: rgba(255, 240, 250, 0.75);
+      font-size: 2rem;
       opacity: 0;
-      animation: floatUp 14s linear infinite;
-      filter: drop-shadow(0 0 8px #ffb6d9);
+      animation: floatPT 14s linear infinite;
+      filter: drop-shadow(0 0 6px #ffb6d9);
       will-change: transform, opacity;
+      /* distribuição garantida sem sobreposição visual */
     }
 
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.6); opacity: 0.2; }
-      30% { opacity: 1; }
-      70% { opacity: 0.8; transform: translateY(30vh) scale(1.2) rotate(5deg); }
-      100% { transform: translateY(-20vh) scale(0.5); opacity: 0; }
+    @keyframes floatPT {
+      0% { transform: translateY(110vh) scale(0.5); opacity: 0.1; }
+      30% { opacity: 0.9; }
+      70% { opacity: 0.7; transform: translateY(30vh) scale(1.2) rotate(3deg); }
+      100% { transform: translateY(-20vh) scale(0.4); opacity: 0; }
     }
 
-    /* main container – flexible, no fixed heights that trap */
-    .game-container {
+    /* container principal flexível */
+    .game-wrapper {
       position: relative;
       z-index: 20;
       width: 100%;
-      max-width: 680px;
-      padding: 0.8rem 1rem 2rem;
+      max-width: 700px;
+      padding: 1rem 1.2rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh; /* fallback */
+      min-height: 100vh;
       min-height: -webkit-fill-available;
     }
 
-    /* status glass panel */
+    /* painel de status com vidro fosco */
     .status-panel {
       background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-radius: 60px;
-      padding: 0.8rem 1.8rem;
+      padding: 0.8rem 2rem;
       margin: 0.5rem 0 2rem;
-      border: 1px solid rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.4);
       box-shadow: 0 15px 30px rgba(0,0,0,0.15);
       width: fit-content;
     }
 
     .remark {
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       font-weight: 800;
       color: white;
-      text-shadow: 2px 2px 0 #b03b70;
-      letter-spacing: 0.5px;
+      text-shadow: 3px 3px 0 #b03b70;
       font-family: 'Montserrat', sans-serif;
       text-align: center;
       line-height: 1.3;
       white-space: nowrap;
     }
-    @media (max-width: 480px) {
-      .remark { font-size: 1.4rem; white-space: normal; }
+    @media (max-width: 500px) {
+      .remark { font-size: 1.5rem; white-space: normal; }
     }
 
-    /* HEART ZONE: relative + full width, no fixed height to avoid clipping */
+    /* zona de caça - apenas para referência, o coração é fixed */
     .heart-zone {
       position: relative;
       width: 100%;
-      flex: 1 1 auto;
-      min-height: 260px;   /* flexible but enough space */
+      min-height: 240px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0.5rem 0 1.5rem;
-      touch-action: none;   /* prevent page drag while interacting inside zone */
+      pointer-events: none; /* não bloqueia o coração fixed */
     }
 
-    /* ----- The fleeing heart (button) ----- */
+    /* CORAÇÃO FUGITIVO - FIXED NA TELA INTEIRA, SEM TRAVAMENTO */
     .heart-btn {
-      position: absolute;   /* will be moved via transform (left/top) */
-      font-size: 5.5rem;
+      position: fixed;
+      font-size: 6rem;
       background: transparent;
       border: none;
       cursor: pointer;
-      filter: drop-shadow(0 15px 25px rgba(200, 20, 100, 0.5));
-      animation: softPulse 1.8s infinite alternate;
-      transition: filter 0.2s;
-      text-shadow: 0 0 25px #ffb0d0;
+      filter: drop-shadow(0 15px 25px #ff4090);
+      animation: pulseSuave 1.6s infinite alternate ease-in-out;
+      text-shadow: 0 0 30px #ffb0d0;
       line-height: 1;
       padding: 0;
       margin: 0;
-      will-change: left, top, transform;
-      /* size for collision area – we'll use a wrapper approach? just the emoji is fine */
-      pointer-events: auto;
+      will-change: left, top, filter;
+      z-index: 1000;
       -webkit-tap-highlight-color: transparent;
-      /* avoid any extra touch delay */
-      touch-action: none;
+      touch-action: none; /* impede scroll ao tocar */
+      pointer-events: auto;
+      transition: opacity 0.2s;
     }
 
-    @keyframes softPulse {
-      0% { transform: scale(1); filter: drop-shadow(0 10px 18px #ff80b0); }
-      100% { transform: scale(1.12); filter: drop-shadow(0 25px 35px #ff3f8f); }
+    @keyframes pulseSuave {
+      0% { transform: scale(1); filter: drop-shadow(0 10px 20px #ff80b0); }
+      100% { transform: scale(1.1); filter: drop-shadow(0 25px 35px #ff3f8f); }
     }
 
-    /* yield state: intense glow, no pulse */
     .heart-btn.yield {
       animation: none;
-      filter: drop-shadow(0 0 40px #ffe085) drop-shadow(0 0 90px #ff80b5);
+      filter: drop-shadow(0 0 45px #ffeeb0) drop-shadow(0 0 90px #ff80b5);
       transform: scale(1.2);
     }
 
-    /* glassmorphism reveal card */
+    /* CARTÃO DE REVELAÇÃO (glassmorphism) */
     .reveal-card {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 60px;
-      padding: 2rem 1.8rem;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-radius: 70px;
+      padding: 2.5rem 2rem;
       width: 100%;
       border: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 30px 50px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.6);
+      box-shadow: 0 30px 50px rgba(0,0,0,0.25), inset 0 3px 6px rgba(255,255,255,0.6);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.8rem;
+      gap: 2rem;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.5s ease, visibility 0s 0.5s;
@@ -186,7 +180,7 @@
     }
 
     .love-message {
-      font-size: 2.3rem;
+      font-size: 2.4rem;
       font-weight: 900;
       color: white;
       text-align: center;
@@ -198,37 +192,37 @@
     .gif-placeholder {
       width: 180px;
       height: 180px;
-      border-radius: 40px;
+      border-radius: 50px;
       background: rgba(255,215,235,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 5rem;
-      border: 3px solid white;
+      font-size: 5.5rem;
+      border: 4px solid white;
       box-shadow: 0 20px 30px rgba(0,0,0,0.2);
     }
 
     .replay-btn {
       background: white;
       border: none;
-      padding: 1rem 2.8rem;
-      border-radius: 50px;
-      font-size: 1.7rem;
+      padding: 1.2rem 3rem;
+      border-radius: 60px;
+      font-size: 1.9rem;
       font-weight: bold;
       color: #b1316a;
-      box-shadow: 0 10px 0 #a13d68, 0 8px 25px hotpink;
+      box-shadow: 0 10px 0 #a13d68, 0 8px 30px hotpink;
       cursor: pointer;
-      transition: all 0.08s linear;
+      transition: all 0.1s linear;
       font-family: 'Poppins', sans-serif;
     }
 
     .replay-btn:active {
-      transform: translateY(7px);
-      box-shadow: 0 3px 0 #a13d68, 0 8px 20px hotpink;
+      transform: translateY(8px);
+      box-shadow: 0 2px 0 #a13d68, 0 8px 25px hotpink;
     }
 
-    /* canvas for heart burst (fixed) */
-    #heartBurstCanvas {
+    /* Canvas para explosão de corações (sem lag) */
+    #heartCanvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -239,242 +233,223 @@
       display: none;
     }
 
-    /* small screen adjustments */
     @media (max-width: 450px) {
-      .heart-btn { font-size: 4.8rem; }
-      .love-message { font-size: 1.8rem; }
-      .gif-placeholder { width: 150px; height: 150px; font-size: 4rem; }
+      .heart-btn { font-size: 5.2rem; }
+      .love-message { font-size: 2rem; }
+      .gif-placeholder { width: 150px; height: 150px; font-size: 4.5rem; }
     }
   </style>
 </head>
 <body>
-  <!-- floating hearts background (static, performance friendly) -->
+  <!-- camada de corações flutuantes (sem overlapping visual) -->
   <div class="floating-hearts" id="floatingHearts"></div>
 
-  <div class="game-container">
+  <div class="game-wrapper">
     <div class="status-panel">
-      <div class="remark" id="statusRemark">💓 catch me?</div>
+      <div class="remark" id="statusRemark">💓 pegue-me?</div>
     </div>
 
-    <!-- dedicated zone for heart movement -->
-    <div class="heart-zone" id="heartZone"></div>  <!-- heart button will be inside via DOM, but we attach to body? we'll manage -->
+    <!-- zona vazia (o coração está fixed no body) -->
+    <div class="heart-zone"></div>
 
-    <!-- reveal card (hidden initially) -->
+    <!-- cartão de vitória -->
     <div class="reveal-card" id="revealCard">
-      <div class="love-message" id="loveMessage">you're my forever</div>
-      <div class="gif-placeholder" id="gifBox">🥰💕</div>
-      <button class="replay-btn" id="replayBtn">again</button>
+      <div class="love-message" id="loveMessage">meu coração é seu</div>
+      <div class="gif-placeholder" id="gifBox">💕🥰💕</div>
+      <button class="replay-btn" id="replayBtn">de novo</button>
     </div>
   </div>
 
-  <canvas id="heartBurstCanvas"></canvas>
+  <canvas id="heartCanvas"></canvas>
 
   <script>
     (function() {
-      // ----- PLAYLIST -----
+      // ---------- TRADUÇÃO COMPLETA PARA PORTUGUÊS ----------
       const remarks = [
-        "Too fast! 💨", "Nice try 😏", "almost! 🔥", "woosh~", "nope 💕",
-        "catch me 🏃", "faster 💘", "slippery!", "off I go!", "😜 ha!"
+        "Muito rápido! 💨", "Quase! 😏", "pegadinha! 🔥", "uoooosh~",
+        "não pegou 💕", "me pega 🏃", "mais rápido 💘", "escorregadio!",
+        "fugiu de novo!", "😜 tente outra vez"
       ];
 
       const loveMessages = [
-        "my heart is yours",
-        "you're my favorite",
-        "all of me loves you",
-        "endless love",
-        "infinitely yours"
+        "meu coração é seu",
+        "você é meu favorito",
+        "todo meu amor é pra você",
+        "infinitamente seu",
+        "amo você sem limites"
       ];
 
-      // ----- DOM references -----
+      // Elementos principais
       const heartBtn = document.createElement('button');
       heartBtn.className = 'heart-btn';
       heartBtn.id = 'fleeingHeart';
-      heartBtn.setAttribute('aria-label', 'fleeing heart');
-      heartBtn.innerHTML = '❤️';  // heart emoji
+      heartBtn.setAttribute('aria-label', 'coração fugitivo');
+      heartBtn.innerHTML = '❤️';
+      document.body.appendChild(heartBtn);  // fixed no body
 
-      // We'll attach heart directly to body to avoid any clipping container, but we want it inside visual flow.
-      // Use fixed positioning relative to viewport for total freedom. And place inside game-container for semantic?
-      // But we need it to be able to go anywhere. So we attach to body, but keep it above everything.
-      document.body.appendChild(heartBtn);  // heart is now direct child of body, with fixed positioning
-
-      // style it fixed (already in CSS), but ensure high z-index
+      // Posição inicial centralizada
       heartBtn.style.position = 'fixed';
       heartBtn.style.zIndex = '1000';
       heartBtn.style.left = '50%';
       heartBtn.style.top = '50%';
       heartBtn.style.transform = 'translate(-50%, -50%)';
 
-      // other elements
       const remarkEl = document.getElementById('statusRemark');
       const revealCard = document.getElementById('revealCard');
       const loveMsgEl = document.getElementById('loveMessage');
       const replayBtn = document.getElementById('replayBtn');
-      const canvas = document.getElementById('heartBurstCanvas');
-      let ctx = canvas.getContext('2d');
+      const canvas = document.getElementById('heartCanvas');
+      const ctx = canvas.getContext('2d');
 
-      // ----- Game state -----
+      // ---------- ESTADO DO JOGO ----------
       let escapeCount = 0;
       const MAX_ESCAPES = 7;
-      let gamePhase = 'chasing';        // 'chasing', 'yield', 'reveal'
+      let gamePhase = 'chasing';        // chasing, yield, reveal
       let canTeleport = true;
-      let teleportThrottle = false;      // prevent event flood
+      let teleportLock = false;          // trava para evitar múltiplos teleportes
 
-      // ----- helper: get random visible fixed position (keeping emoji fully inside) -----
-      function getRandomPosition() {
-        const heartWidth = heartBtn.offsetWidth;
-        const heartHeight = heartBtn.offsetHeight;
-
-        // fallback if offset is 0 (not rendered yet)
-        const w = heartWidth || 80;   // approximate
-        const h = heartHeight || 80;
-
-        const maxLeft = window.innerWidth - w;
-        const maxTop = window.innerHeight - h;
-
-        // ensure never negative or overflow
-        const left = Math.max(2, Math.min(maxLeft - 2, Math.random() * window.innerWidth));
-        const top = Math.max(2, Math.min(maxTop - 2, Math.random() * window.innerHeight));
+      // ---------- UTILITÁRIO: posição aleatória segura (sem sair da tela) ----------
+      function getSafeRandomPos() {
+        const w = heartBtn.offsetWidth || 90;
+        const h = heartBtn.offsetHeight || 90;
+        const maxLeft = window.innerWidth - w - 4;    // margem 4px
+        const maxTop = window.innerHeight - h - 4;
+        const left = Math.max(4, Math.min(maxLeft, Math.random() * window.innerWidth));
+        const top = Math.max(4, Math.min(maxTop, Math.random() * window.innerHeight));
         return { left, top };
       }
 
-      // safely move heart (with throttle to avoid crazy stacking)
+      // Teleporte controlado (sem lag, com lock de 50ms)
       function teleportHeart() {
-        if (!canTeleport || gamePhase !== 'chasing' || teleportThrottle) return;
-        teleportThrottle = true;
-        const pos = getRandomPosition();
+        if (!canTeleport || gamePhase !== 'chasing' || teleportLock) return;
+        teleportLock = true;
+        const pos = getSafeRandomPos();
         heartBtn.style.left = pos.left + 'px';
         heartBtn.style.top = pos.top + 'px';
-
-        // release throttle after short time (faster than human interactions)
-        setTimeout(() => { teleportThrottle = false; }, 40);  // 40ms cooldown
+        setTimeout(() => { teleportLock = false; }, 50);  // 50ms cooldown suficiente
       }
 
-      // random remark
-      function setRandomRemark() {
+      // Atualiza frase aleatória
+      function updateRemark() {
         const idx = Math.floor(Math.random() * remarks.length);
         remarkEl.innerText = remarks[idx];
       }
 
-      // ----- flee handler (works with both mouse and touch) -----
+      // ---------- HANDLER DE FUGA (mouse + toque) ----------
       function fleeHandler(e) {
-        // Prevent default to avoid scrolling or zoom
-        e.preventDefault();
+        e.preventDefault();  // essencial para evitar zoom/scroll
         if (gamePhase !== 'chasing' || !canTeleport) return;
 
-        // count escape
         escapeCount++;
-        setRandomRemark();
+        updateRemark();
 
         if (escapeCount >= MAX_ESCAPES) {
-          // YIELD MODE
+          // Modo "cansado" - coração para e brilha
           gamePhase = 'yield';
           canTeleport = false;
           heartBtn.classList.add('yield');
-          remarkEl.innerText = '✨ You win! My heart is tired. Click it! ✨';
-          // keep heart at same position
+          remarkEl.innerText = '✨ Você venceu! Meu coração está cansado. Clique! ✨';
         } else {
-          teleportHeart();  // move away
+          teleportHeart();
         }
       }
 
-      // attach both mouseenter and touchstart (touch will fire multiple times but throttle will reduce)
+      // Eventos: mouse enter e touch start (comportamento consistente)
       heartBtn.addEventListener('mouseenter', fleeHandler);
       heartBtn.addEventListener('touchstart', fleeHandler, { passive: false });
 
-      // ----- final click (only when yield) -----
-      function finalClickHandler(e) {
+      // ---------- CLIQUE FINAL (quando yield) ----------
+      function finalCatchHandler(e) {
+        e.preventDefault();
         if (gamePhase === 'yield') {
           gamePhase = 'reveal';
           canTeleport = false;
 
-          // random love message
+          // Escolhe mensagem de amor aleatória
           loveMsgEl.innerText = loveMessages[Math.floor(Math.random() * loveMessages.length)];
 
-          // show glass card
+          // Exibe cartão
           revealCard.classList.add('show');
 
-          // launch heart burst
-          startHeartBurst();
+          // Dispara corações na tela (efeito visual)
+          startHeartExplosion();
 
-          // fade heart a bit but keep visible
-          heartBtn.style.opacity = '0.35';
-          heartBtn.style.pointerEvents = 'none';   // avoid extra clicks
-
-          remarkEl.innerText = '❤️ forever yours ❤️';
+          // Enfraquece o coração
+          heartBtn.style.opacity = '0.4';
+          heartBtn.style.pointerEvents = 'none';
+          remarkEl.innerText = '❤️ para sempre ❤️';
         }
       }
-      heartBtn.addEventListener('click', finalClickHandler);
-      // for touch devices, click works but also add touchend to be safe
-      heartBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        if (gamePhase === 'yield') finalClickHandler(e);
-      });
 
-      // ----- replay -----
+      heartBtn.addEventListener('click', finalCatchHandler);
+      heartBtn.addEventListener('touchend', (e) => { e.preventDefault(); finalCatchHandler(e); });
+
+      // ---------- REINICIAR JOGO ----------
       function restartGame() {
         escapeCount = 0;
         gamePhase = 'chasing';
         canTeleport = true;
-        teleportThrottle = false;
+        teleportLock = false;
         heartBtn.classList.remove('yield');
         heartBtn.style.opacity = '1';
         heartBtn.style.pointerEvents = 'auto';
         revealCard.classList.remove('show');
 
-        // reset heart to center (respecting bounds)
-        const centerLeft = (window.innerWidth / 2) - (heartBtn.offsetWidth / 2);
-        const centerTop = (window.innerHeight / 2) - (heartBtn.offsetHeight / 2);
-        heartBtn.style.left = Math.max(0, centerLeft) + 'px';
-        heartBtn.style.top = Math.max(0, centerTop) + 'px';
+        // centraliza suavemente
+        const left = (window.innerWidth / 2) - (heartBtn.offsetWidth / 2);
+        const top = (window.innerHeight / 2) - (heartBtn.offsetHeight / 2);
+        heartBtn.style.left = Math.max(4, left) + 'px';
+        heartBtn.style.top = Math.max(4, top) + 'px';
 
-        remarkEl.innerText = '💓 catch me?';
+        remarkEl.innerText = '💓 pegue-me?';
 
-        // clear canvas
+        // limpa canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.style.display = 'none';
-        if (burstFrame) cancelAnimationFrame(burstFrame);
-        burstFrame = null;
+        if (explosionFrame) cancelAnimationFrame(explosionFrame);
+        explosionFrame = null;
       }
+
       replayBtn.addEventListener('click', restartGame);
       replayBtn.addEventListener('touchend', (e) => { e.preventDefault(); restartGame(); });
 
-      // ----- heart burst (confetti style) -----
+      // ---------- EXPLOSÃO DE CORAÇÕES (SEM LAG, LEVE) ----------
       let particles = [];
-      let burstFrame = null;
+      let explosionFrame = null;
 
-      function startHeartBurst() {
+      function startHeartExplosion() {
         canvas.style.display = 'block';
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         particles = [];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 130; i++) {  // quantidade moderada para manter fluidez
           particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 12,
-            vy: (Math.random() - 1) * 12 - 6,
-            size: Math.random() * 34 + 18,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 1.2) * 10 - 5,
+            size: Math.random() * 32 + 18,
             opacity: Math.random() * 0.9 + 0.2,
-            char: Math.random() > 0.5 ? '❤️' : '💖',
+            char: Math.random() > 0.4 ? '❤️' : '💖',
           });
         }
 
-        function draw() {
+        function drawExplosion() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          let anyAlive = false;
+          let active = false;
           for (let p of particles) {
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.2;   // gravity
+            p.vy += 0.2;   // gravidade suave
             p.vx *= 0.99;
-            p.opacity *= 0.992;
-            if (p.y < canvas.height + 60 && p.opacity > 0.01) anyAlive = true;
+            p.opacity *= 0.994;
+            if (p.y < canvas.height + 70 && p.opacity > 0.01) active = true;
 
             ctx.font = `${p.size}px 'Segoe UI', 'Arial', 'Apple Color Emoji'`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.shadowColor = '#ffb0d0';
+            ctx.shadowColor = '#ffa0c0';
             ctx.shadowBlur = 20;
             ctx.globalAlpha = p.opacity;
             ctx.fillStyle = 'white';
@@ -483,87 +458,87 @@
           ctx.shadowBlur = 0;
           ctx.globalAlpha = 1;
 
-          if (anyAlive) {
-            burstFrame = requestAnimationFrame(draw);
+          if (active) {
+            explosionFrame = requestAnimationFrame(drawExplosion);
           } else {
             canvas.style.display = 'none';
             particles = [];
           }
         }
-        draw();
+        drawExplosion();
       }
 
-      // ----- background floating hearts generation (lightweight) -----
+      // ---------- CORAÇÕES FLUTUANTES (SEM SOBREPOSIÇÃO PESADA) ----------
       function generateFloatingHearts(count = 18) {
         const container = document.getElementById('floatingHearts');
         for (let i = 0; i < count; i++) {
-          const heart = document.createElement('span');
-          heart.className = 'heart-particle';
-          heart.innerText = ['❤️', '💗', '💕', '💓'][Math.floor(Math.random() * 4)];
-          heart.style.left = Math.random() * 100 + '%';
-          heart.style.animationDelay = Math.random() * 12 + 's';
-          heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
-          heart.style.fontSize = (Math.random() * 28 + 18) + 'px';
-          container.appendChild(heart);
+          const span = document.createElement('span');
+          span.className = 'heart-particle';
+          span.innerText = ['❤️', '💗', '💕', '💓'][Math.floor(Math.random() * 4)];
+          span.style.left = Math.random() * 100 + '%';
+          span.style.animationDelay = Math.random() * 12 + 's';
+          span.style.animationDuration = (Math.random() * 8 + 10) + 's'; // entre 10s e 18s
+          span.style.fontSize = (Math.random() * 28 + 20) + 'px';
+          container.appendChild(span);
         }
       }
       generateFloatingHearts(20);
 
-      // ----- window resize: ensure heart stays within bounds, and adjust canvas-----
+      // ---------- REDIMENSIONAMENTO: reposiciona coração se necessário ----------
       window.addEventListener('resize', () => {
-        if (gamePhase === 'chasing' || gamePhase === 'yield') {
-          // if heart is out of new bounds, reposition gently (only if needed)
+        if (gamePhase === 'chasing' && canTeleport) {
           const rect = heartBtn.getBoundingClientRect();
-          const tol = 5;
-          if (rect.right > window.innerWidth + tol || rect.left < -tol || rect.bottom > window.innerHeight + tol || rect.top < -tol) {
-            // teleport to safe spot, but only if chasing & canTeleport, else clamp?
-            if (gamePhase === 'chasing' && canTeleport) {
-              const pos = getRandomPosition();
-              heartBtn.style.left = pos.left + 'px';
-              heartBtn.style.top = pos.top + 'px';
-            } else if (gamePhase === 'yield') {
-              // clamp to visible (soft)
-              const newLeft = Math.min(window.innerWidth - rect.width, Math.max(0, rect.left));
-              const newTop = Math.min(window.innerHeight - rect.height, Math.max(0, rect.top));
-              heartBtn.style.left = newLeft + 'px';
-              heartBtn.style.top = newTop + 'px';
-            }
+          const buffer = 10;
+          if (rect.right > window.innerWidth + buffer || rect.left < -buffer || rect.bottom > window.innerHeight + buffer || rect.top < -buffer) {
+            const pos = getSafeRandomPos();
+            heartBtn.style.left = pos.left + 'px';
+            heartBtn.style.top = pos.top + 'px';
           }
+        } else if (gamePhase === 'yield') {
+          // apenas garante que não fique escondido
+          const rect = heartBtn.getBoundingClientRect();
+          let newLeft = rect.left;
+          let newTop = rect.top;
+          if (rect.right > window.innerWidth) newLeft = window.innerWidth - rect.width - 5;
+          if (rect.left < 0) newLeft = 5;
+          if (rect.bottom > window.innerHeight) newTop = window.innerHeight - rect.height - 5;
+          if (rect.top < 0) newTop = 5;
+          heartBtn.style.left = newLeft + 'px';
+          heartBtn.style.top = newTop + 'px';
         }
+
+        // redimensiona canvas se estiver ativo
         if (canvas.style.display === 'block') {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
         }
       });
 
-      // extra safety for touch: prevent page move on heart zone (but heart is fixed)
-      document.body.addEventListener('touchmove', (e) => {
-        if (e.target === heartBtn) e.preventDefault();
-      }, { passive: false });
+      // Impede scroll ao tocar no coração
+      heartBtn.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
-      // ensure initial heart center
-      function setInitialHeartPos() {
+      // Posição inicial robusta
+      function setInitialPosition() {
         const left = (window.innerWidth / 2) - (heartBtn.offsetWidth / 2);
         const top = (window.innerHeight / 2) - (heartBtn.offsetHeight / 2);
-        heartBtn.style.left = Math.max(2, left) + 'px';
-        heartBtn.style.top = Math.max(2, top) + 'px';
+        heartBtn.style.left = Math.max(4, left) + 'px';
+        heartBtn.style.top = Math.max(4, top) + 'px';
       }
-      setInitialHeartPos();
-      // fallback for images not loaded
-      window.addEventListener('load', setInitialHeartPos);
+      setInitialPosition();
+      window.addEventListener('load', setInitialPosition);
 
-      // disable context menu on heart
+      // Previne menu de contexto
       heartBtn.addEventListener('contextmenu', (e) => e.preventDefault());
 
-      // small throttle for touch events to avoid double count
+      // trava extra para evitar múltiplos toques rápidos
       let touchGuard = false;
       heartBtn.addEventListener('touchstart', (e) => {
-        if (!touchGuard) {
-          touchGuard = true;
-          setTimeout(() => { touchGuard = false; }, 100);
-        } else {
-          e.preventDefault();  // ignore rapid extra touches
+        if (touchGuard) {
+          e.preventDefault();
+          return;
         }
+        touchGuard = true;
+        setTimeout(() => { touchGuard = false; }, 120);
       }, { passive: false });
     })();
   </script>
