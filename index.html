@@ -1,143 +1,446 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pega o Coração!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    
+    <!-- Google Fonts: Poppins for a modern, playful look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* Prevent text selection during frantic clicking */
+        }
+
         body {
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            height: 100vh; width: 100vw;
-            background: linear-gradient(135deg, #ff75c3, #8f44ad);
-            font-family: sans-serif;
-            overflow: hidden; /* Impede que a tela balance ou role */
-            position: fixed; /* Trava o fundo no mobile */
-        }
-
-        #instrucao {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Prevent scrollbars */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Dynamic Animated Gradient Background */
+            background: linear-gradient(-45deg, #8f44ad, #ff75c3, #4a00e0, #ff0055);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- FLOATING BACKGROUND PARTICLES --- */
+        .particle {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.4);
             font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            z-index: 5;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            pointer-events: none; /* Não atrapalha o clique */
-            padding: 20px;
+            pointer-events: none; /* Let clicks pass through */
+            animation: floatUp linear infinite;
+            z-index: 0;
         }
 
-        .btn-coracao {
-            font-size: 4rem;
-            background: none; border: none;
-            cursor: pointer;
-            z-index: 100;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.15s ease-out;
-            display: block;
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        #conteudo-final {
-            display: none;
+        /* --- GAME UI --- */
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
             flex-direction: column;
-            justify-content: center; align-items: center;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 200;
-            padding: 20px;
+            justify-content: center;
+            align-items: center;
         }
 
-        .imagem-fofa {
-            max-width: 90%;
-            border-radius: 15px;
-            margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .heart-bg {
+        #status-text {
             position: absolute;
-            color: rgba(255, 255, 255, 0.3);
-            animation: float 5s linear infinite;
-            bottom: -50px;
+            top: 10%;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
             pointer-events: none;
+            transition: opacity 0.3s;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-110vh); opacity: 0; }
+        /* The Fleeing Heart */
+        #target-heart {
+            font-size: 5rem;
+            cursor: pointer;
+            position: absolute;
+            transition: transform 0.1s ease; /* Slight smoothness for movement */
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            z-index: 20;
+            /* Center initially */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Pulsing Animation */
+        .pulsing {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* The "Tired" State (Glowing) */
+        .tired {
+            animation: intenseGlow 0.5s infinite alternate;
+            filter: drop-shadow(0 0 20px #ff75c3);
+        }
+
+        @keyframes intenseGlow {
+            from { transform: translate(-50%, -50%) scale(1); }
+            to { transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        /* --- GRAND REVEAL CARD (Glassmorphism) --- */
+        #reveal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        #reveal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #reveal-overlay.active .glass-card {
+            transform: scale(1);
+        }
+
+        .love-message {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .cute-gif {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .replay-btn {
+            background: white;
+            color: #8f44ad;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .replay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- CONFETTI CANVAS --- */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            #target-heart { font-size: 4rem; }
+            #status-text { font-size: 1.1rem; top: 5%; }
         }
     </style>
 </head>
 <body>
 
-    <div id="instrucao">TENTE PEGAR MEU CORAÇÃO! ❤️</div>
-    <button id="coracao-foge" class="btn-coracao">❤️</button>
+    <!-- Background Particles Container -->
+    <div id="particles-container"></div>
 
-    <div id="conteudo-final">
-        <h1 style="color: #8f44ad; text-align: center;">VOCÊ ME PEGOU! ❤️</h1>
-        <p style="font-size: 1.1rem; text-align: center;">SÓ VOCÊ ESTÁ NO MEU CORAÇÃO!</p>
-        <img class="imagem-fofa" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K1TQa8wwqqUyc/giphy.gif">
-        <button onclick="location.reload()" style="padding: 12px 25px; border-radius: 20px; background: #ff75c3; color: white; border: none; font-weight: bold;">Recomeçar</button>
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Game Area -->
+    <div id="game-container">
+        <div id="status-text">Catch my heart! ❤️</div>
+        <div id="target-heart" class="pulsing">❤️</div>
+    </div>
+
+    <!-- Grand Reveal Overlay -->
+    <div id="reveal-overlay">
+        <div class="glass-card">
+            <div class="love-message" id="love-msg">Loading...</div>
+            <!-- Cute animated GIF placeholder -->
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eW55eW55eW55eW55eW55eW55eW55eW55eW55eW55eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRv0ThflsHCqDrG/giphy.gif" alt="Cute Bear Hug" class="cute-gif">
+            <button class="replay-btn" onclick="resetGame()">Replay</button>
+        </div>
     </div>
 
     <script>
-        const btn = document.getElementById('coracao-foge');
-        const instrucao = document.getElementById('instrucao');
-        let tentativas = 0;
-        const limiteFuga = 5; 
+        /**
+         * CONFIGURATION & STATE
+         */
+        const MAX_ATTEMPTS = 7;
+        let attempts = 0;
+        let isWon = false;
+        
+        // DOM Elements
+        const heart = document.getElementById('target-heart');
+        const statusText = document.getElementById('status-text');
+        const revealOverlay = document.getElementById('reveal-overlay');
+        const loveMsgEl = document.getElementById('love-msg');
+        const particlesContainer = document.getElementById('particles-container');
 
-        function mover(e) {
-            if (tentativas < limiteFuga) {
-                // Impede o comportamento padrão do toque para não travar
-                if(e) e.preventDefault();
+        // Messages
+        const messages = [
+            "You win! My heart is tired of running. Click it!",
+            "Okay, okay! You caught me! ❤️",
+            "You're persistent! I like that. Click me!",
+            "Fine, you win. Don't let it go! 💖",
+            "My heart belongs to you now. Click to claim it!"
+        ];
 
-                // Calcula área disponível (janela menos tamanho do botão)
-                const maxX = window.innerWidth - btn.offsetWidth;
-                const maxY = window.innerHeight - btn.offsetHeight;
+        const romanticMessages = [
+            "You make my world brighter just by being in it.",
+            "Every moment with you is a treasure I cherish.",
+            "You are the missing piece to my puzzle.",
+            "My heart beats faster every time I see your name.",
+            "I love you more than words can say."
+        ];
 
-                // Gera posições dentro do limite visível
-                const newX = Math.random() * maxX;
-                const newY = Math.random() * maxY;
+        /**
+         * INITIALIZATION
+         */
+        function init() {
+            createFloatingParticles();
+            setupEventListeners();
+        }
 
-                btn.style.left = newX + 'px';
-                btn.style.top = newY + 'px';
-                btn.style.transform = 'none'; // Importante para mobile
-                
-                tentativas++;
-                
-                if (tentativas >= limiteFuga) {
-                    instrucao.innerText = "OK, VOCÊ VENCEU! CLICA AGORA! ❤️";
-                    btn.style.transition = "transform 0.3s";
-                    btn.style.filter = "drop-shadow(0 0 15px gold)";
-                }
+        /**
+         * BACKGROUND PARTICLE SYSTEM
+         */
+        function createFloatingParticles() {
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.innerHTML = Math.random() > 0.5 ? '❤️' : '✨';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 5 + 5) + 's'; // 5-10s duration
+                p.style.fontSize = (Math.random() * 1 + 0.5) + 'rem';
+                particlesContainer.appendChild(p);
             }
         }
 
-        // Eventos Mobile e PC
-        btn.addEventListener('touchstart', mover, {passive: false});
-        btn.addEventListener('mouseover', mover);
+        /**
+         * GAME LOGIC: THE ESCAPE
+         */
+        function setupEventListeners() {
+            // Desktop: Mouseover
+            heart.addEventListener('mouseover', () => {
+                if (!isWon) moveHeart();
+            });
 
-        // Clique para abrir o prêmio
-        btn.addEventListener('click', () => {
-            if (tentativas >= limiteFuga) {
-                document.getElementById('conteudo-final').style.display = 'flex';
+            // Mobile: Touchstart (prevents delay)
+            heart.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent click
+                if (!isWon) moveHeart();
+            });
+        }
+
+        function moveHeart() {
+            attempts++;
+            
+            // 1. Update Status Text
+            if (attempts < MAX_ATTEMPTS) {
+                const remarks = ["Too fast!", "Nice try!", "Closer!", "So close!", "Almost there!"];
+                const remark = remarks[Math.min(attempts - 1, remarks.length - 1)];
+                statusText.innerText = `${remark} (${attempts}/${MAX_ATTEMPTS})`;
             }
-        });
 
-        // Corações de fundo (menos frequência para não travar celular fraco)
-        setInterval(() => {
-            const h = document.createElement('div');
-            h.classList.add('heart-bg');
-            h.innerHTML = '❤️';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 5000);
-        }, 800);
-    </script>
-</body>
-</html>
+            // 2. Calculate New Position
+            // We use viewport units to ensure it stays on screen
+            const x = Math.random() * (window.innerWidth - 100); // -100 for padding
+            const y = Math.random() * (window.innerHeight - 100);
+
+            // 3. Apply Position
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            heart.style.transform = 'translate(0, 0)'; // Reset transform from centering
+
+            // 4. Check for Yield Condition
+            if (attempts >= MAX_ATTEMPTS) {
+                yieldHeart();
+            }
+        }
+
+        function yieldHeart() {
+            isWon = true;
+            statusText.style.display = 'none'; // Hide status text
+            heart.classList.remove('pulsing');
+            heart.classList.add('tired');
+            heart.innerText = "💖"; // Change emoji slightly
+            heart.style.cursor = "pointer";
+            
+            // Change text to invite click
+            statusText.innerText = "You win! Click me!";
+            statusText.style.display = 'block';
+            statusText.style.top = '15%';
+            statusText.style.fontSize = '1.2rem';
+            statusText.style.color = '#ff75c3';
+
+            // Add click listener for the final reveal
+            heart.addEventListener('click', triggerReveal);
+        }
+
+        /**
+         * GRAND REVEAL
+         */
+        function triggerReveal() {
+            // 1. Stop heart from moving (remove listeners)
+            heart.removeEventListener('click', triggerReveal);
+            heart.removeEventListener('mouseover', moveHeart);
+            heart.removeEventListener('touchstart', moveHeart);
+
+            // 2. Trigger Confetti
+            startConfetti();
+
+            // 3. Pick Random Message & Image
+            const randomMsg = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
+            loveMsgEl.innerText = randomMsg;
+
+            // 4. Show Card
+            revealOverlay.classList.add('active');
+        }
+
+        /**
+         * REPLAY FUNCTION
+         */
+        function resetGame() {
+            // Reset State
+            attempts = 0;
+            isWon = false;
+            
+            // Reset UI
+            revealOverlay.classList.remove('active');
+            heart.classList.remove('tired');
+            heart.classList.add('pulsing');
+            heart.innerText = "❤️";
+            statusText.style.display = 'block';
+            statusText.innerText = "Catch my heart! ❤️";
+            statusText.style.color = 'white';
+            statusText.style.top = '10%';
+            statusText.style.fontSize = '1.5rem';
+
+            // Reset Heart Position
+            heart.style.left = '50%';
+            heart.style.top = '50%';
+            heart.style.transform = 'translate(-50%, -50%)';
+
+            // Re-setup listeners
+            setupEventListeners();
+        }
+
+        /**
+         * SIMPLE CONFETTI ENGINE (Canvas)
+         */
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#ff75c3', '#8f44ad', '#ffffff', '#ff0055'];
+
+            // Create particles
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 0.5) * 20,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    gravity: 0.5,
+                    drag: 0.96
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let activeParticles = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.vx *= p.drag;
+                    p.vy *= p.drag;
+
+                    if (p.y < canvas.height) {
+                        activeParticles = true;
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(p.x, p.y, p.w, p.h);
+                    }
+                });
+
+                if (activeParticles)
