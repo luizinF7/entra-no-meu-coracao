@@ -17,201 +17,198 @@
     }
 
     html, body {
+      min-height: 100%;
       width: 100%;
-      height: 100%;
       overflow: hidden;
-      position: fixed;
+      background: radial-gradient(circle at 30% 35%, #3b0f3b, #11070f);
+      font-family: 'Poppins', sans-serif;
+      color: #f8eef7;
     }
 
     body {
-      background: radial-gradient(circle at 30% 50%, #2d1a2d, #1a0f1a);
-      font-family: 'Poppins', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Background Particles */
     #particle-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     }
 
     .game-container {
       position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 800px;
-      padding: 1rem;
+      z-index: 5;
+      width: min(96vw, 900px);
+      padding: 1.25rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 1.25rem;
+      min-height: 90vh;
       justify-content: center;
-      height: 100vh;
     }
 
-    /* Score Panel */
+    .glass-card {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 48px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.32);
+    }
+
     .score-panel {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 60px;
-      padding: 1rem 2.5rem;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 1.6rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
     .score-text {
-      font-size: 2rem;
+      font-size: clamp(1.4rem, 2vw, 2rem);
       font-weight: 700;
-      color: #fff5f5;
-      text-shadow: 0 2px 10px rgba(255, 100, 150, 0.5);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fdf1f7;
     }
 
     .score-highlight {
-      color: #ffd966;
+      font-size: clamp(2.2rem, 3.4vw, 3rem);
       font-weight: 800;
-      font-size: 2.4rem;
-      margin-left: 0.5rem;
+      color: #ffd96e;
+      text-shadow: 0 6px 18px rgba(255, 180, 120, 0.35);
     }
 
-    /* Timer Bar */
     .timer-container {
-      width: 80%;
-      max-width: 400px;
-      height: 8px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      margin: 1rem 0 2rem;
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
       overflow: hidden;
-      backdrop-filter: blur(5px);
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.08);
     }
 
     .timer-bar {
-      height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #ff758c, #ffb5b5);
-      border-radius: 10px;
-      transition: width 0.05s linear;
-      box-shadow: 0 0 20px #ff4d6d;
+      height: 100%;
+      background: linear-gradient(90deg, #ff8baa, #ffcfda);
+      transition: width 0.1s linear;
     }
 
-    /* Message Panel */
     .message-panel {
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border-radius: 40px;
-      padding: 1rem 2rem;
-      margin: 2rem 0;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 38px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      text-align: center;
     }
 
     .message-text {
-      font-size: 1.4rem;
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 500;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #ffe8ee;
+      line-height: 1.5;
     }
 
-    /* Heart Container */
-    #heart-container {
-      position: absolute;
+    .stats-container {
       width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 100;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
     }
 
-    /* Main Heart Button */
+    .stat-item {
+      padding: 1rem 1.2rem;
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: #e7dfe8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #ffdf8b;
+    }
+
+    #heart-container {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
     .heart-btn {
       position: absolute;
-      width: 100px;
-      height: 100px;
-      background: none;
-      border: none;
+      width: 110px;
+      height: 110px;
+      border: 0;
+      outline: none;
+      background: transparent;
       cursor: pointer;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.16s ease, opacity 0.2s ease;
+      filter: drop-shadow(0 14px 30px rgba(255, 100, 150, 0.4));
       pointer-events: auto;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease;
-      filter: drop-shadow(0 10px 20px rgba(255, 20, 120, 0.6));
-      will-change: left, top;
+      touch-action: none;
     }
 
     .heart-btn:active {
-      transform: translate(-50%, -50%) scale(0.9);
+      transform: translate(-50%, -50%) scale(0.92);
     }
 
     .heart-btn svg {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 0 15px #ff4d8c);
     }
 
     .heart-btn.yield {
-      filter: drop-shadow(0 0 40px #ffaa00);
-      animation: yieldPulse 1.2s ease-in-out infinite;
+      animation: glowPulse 1.25s ease-in-out infinite;
     }
 
-    @keyframes yieldPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1.2); }
-      50% { transform: translate(-50%, -50%) scale(1.4); }
+    @keyframes glowPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1.1); }
+      50% { transform: translate(-50%, -50%) scale(1.25); }
     }
 
-    /* Stats Container */
-    .stats-container {
-      display: flex;
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
-    .stat-item {
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(5px);
-      border-radius: 30px;
-      padding: 0.6rem 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #ffd966;
-      margin-left: 0.5rem;
-    }
-
-    /* Reveal Card */
     .reveal-card {
       position: fixed;
-      top: 50%;
+      inset: auto 0 0 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      border-radius: 60px;
-      padding: 2.5rem;
-      min-width: 320px;
-      max-width: 450px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: min(90vw, 420px);
+      padding: 2rem 2.2rem;
       display: flex;
       flex-direction: column;
+      gap: 1.5rem;
       align-items: center;
-      gap: 2rem;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 48px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+      z-index: 12;
     }
 
     .reveal-card.show {
@@ -222,66 +219,77 @@
 
     .love-message {
       font-family: 'Dancing Script', cursive;
-      font-size: 3.2rem;
-      color: white;
+      font-size: clamp(2.5rem, 5vw, 3.6rem);
       text-align: center;
-      text-shadow: 2px 2px 0 #b23b75;
+      color: #fff;
+      text-shadow: 0 8px 24px rgba(255, 120, 170, 0.32);
     }
 
     .floating-emoji {
-      font-size: 7rem;
-      line-height: 1;
+      font-size: clamp(4rem, 8vw, 6rem);
       animation: floatEmoji 2s ease-in-out infinite;
     }
 
     @keyframes floatEmoji {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-14px); }
     }
 
     .replay-btn {
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
       border: none;
-      padding: 1.2rem 3rem;
-      border-radius: 50px;
-      font-size: 1.5rem;
+      border-radius: 999px;
+      padding: 1rem 2.2rem;
+      background: linear-gradient(135deg, #ff8aac, #ffccdd);
+      color: #420b34;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: white;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: 'Poppins', sans-serif;
-      box-shadow: 0 10px 25px rgba(255, 75, 100, 0.4);
+      box-shadow: 0 16px 35px rgba(255, 135, 175, 0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .replay-btn:hover {
+      transform: translateY(-2px);
     }
 
     .replay-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.96);
     }
 
-    @media (max-width: 600px) {
-      .score-text { font-size: 1.5rem; }
-      .score-highlight { font-size: 1.8rem; }
-      .love-message { font-size: 2.5rem; }
-      .floating-emoji { font-size: 5rem; }
+    @media (max-width: 640px) {
+      .game-container {
+        min-height: auto;
+        padding: 1rem;
+      }
+
+      .score-panel {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <canvas id="particle-canvas"></canvas>
-  
+
   <div id="heart-container"></div>
 
   <div class="game-container">
-    <div class="score-panel">
+    <div class="glass-card score-panel">
       <span class="score-text">💕 LOVE METER</span>
       <span class="score-highlight" id="loveMeter">0%</span>
     </div>
 
-    <div class="timer-container">
+    <div class="glass-card timer-container">
       <div class="timer-bar" id="timerBar"></div>
     </div>
 
-    <div class="message-panel">
-      <div class="message-text" id="messageDisplay">💗 pegue o coração!</div>
+    <div class="glass-card message-panel">
+      <div class="message-text" id="messageDisplay">💗 toque no coração quando ele estiver pronto</div>
     </div>
 
     <div class="stats-container">
@@ -294,72 +302,42 @@
         <span class="stat-value" id="timeDisplay">0.0s</span>
       </div>
     </div>
+  </div>
 
-    <div class="reveal-card" id="revealCard">
-      <div class="love-message" id="loveMessage">para sempre seu</div>
-      <div class="floating-emoji" id="emojiDisplay">💖</div>
-      <button class="replay-btn" id="replayBtn">jogar novamente</button>
-    </div>
+  <div class="reveal-card" id="revealCard">
+    <div class="love-message" id="loveMessage">para sempre seu</div>
+    <div class="floating-emoji" id="emojiDisplay">💖</div>
+    <button class="replay-btn" id="replayBtn" type="button">jogar novamente</button>
   </div>
 
   <script>
     (function() {
       'use strict';
-      
-      // Configurações
+
       const CONFIG = {
         MAX_INTERACTIONS: 7,
-        MOVE_SPEED: 0.03,
-        TIMER_DURATION: 30000,
-        PARTICLE_COUNT: 30,
-        TELEPORT_COOLDOWN: 100
+        MOVE_SPEED: 0.045,
+        TIMER_DURATION: 28000,
+        PARTICLE_COUNT: 28,
+        TELEPORT_COOLDOWN: 160
       };
 
-      // Estado
       const state = {
-        phase: 'chasing', // chasing, yield, reveal
+        phase: 'chasing',
         interactions: 0,
         tapCount: 0,
-        startTime: Date.now(),
-        timerInterval: null,
+        lastInteraction: 0,
+        canInteract: true,
         heartPos: { x: 0.5, y: 0.5 },
         targetPos: { x: 0.5, y: 0.5 },
+        timerInterval: null,
         animationFrame: null,
-        lastInteraction: 0,
-        canInteract: true
+        startTime: 0
       };
 
-      // Elementos
-      const container = document.getElementById('heart-container');
-      const heartBtn = document.createElement('button');
-      heartBtn.className = 'heart-btn';
-      heartBtn.id = 'heartBtn';
-      heartBtn.innerHTML = `
-        <svg viewBox="0 0 100 100">
-          <defs>
-            <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff4d6d"/>
-              <stop offset="100%" stop-color="#ffb3b3"/>
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <path d="M50 20 C5 0, 0 50, 50 85 C100 50, 95 0, 50 20" 
-                fill="url(#heartGradient)" 
-                filter="url(#glow)"
-                stroke="white" 
-                stroke-width="2"/>
-        </svg>
-      `;
-      container.appendChild(heartBtn);
-
       const elements = {
-        heart: heartBtn,
+        particleCanvas: document.getElementById('particle-canvas'),
+        heartContainer: document.getElementById('heart-container'),
         message: document.getElementById('messageDisplay'),
         loveMeter: document.getElementById('loveMeter'),
         timerBar: document.getElementById('timerBar'),
@@ -368,21 +346,45 @@
         revealCard: document.getElementById('revealCard'),
         loveMessage: document.getElementById('loveMessage'),
         emojiDisplay: document.getElementById('emojiDisplay'),
-        replayBtn: document.getElementById('replayBtn'),
-        particleCanvas: document.getElementById('particle-canvas')
+        replayBtn: document.getElementById('replayBtn')
       };
 
-      // ==================== SISTEMA DE PARTÍCULAS ====================
+      const heartBtn = document.createElement('button');
+      heartBtn.className = 'heart-btn';
+      heartBtn.type = 'button';
+      heartBtn.innerHTML = `
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff4d6d" />
+              <stop offset="100%" stop-color="#ffb3b3" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <path d="M50 20 C10 0, 0 40, 50 85 C100 40, 90 0, 50 20"
+                fill="url(#heartGradient)"
+                filter="url(#glow)"
+                stroke="rgba(255,255,255,0.9)"
+                stroke-width="2" />
+        </svg>
+      `;
+      elements.heartContainer.appendChild(heartBtn);
+
       class ParticleSystem {
         constructor(canvas) {
           this.canvas = canvas;
           this.ctx = canvas.getContext('2d');
           this.particles = [];
           this.resize();
-          this.init();
-          this.animate();
-          
+          this.createParticles();
           window.addEventListener('resize', () => this.resize());
+          this.animate();
         }
 
         resize() {
@@ -390,133 +392,130 @@
           this.canvas.height = window.innerHeight;
         }
 
-        init() {
+        createParticles() {
+          this.particles.length = 0;
           for (let i = 0; i < CONFIG.PARTICLE_COUNT; i++) {
             this.particles.push({
               x: Math.random() * this.canvas.width,
               y: Math.random() * this.canvas.height,
-              vx: (Math.random() - 0.5) * 0.3,
-              vy: (Math.random() - 0.5) * 0.3,
-              size: Math.random() * 2 + 1,
-              opacity: Math.random() * 0.3 + 0.1,
-              color: `hsl(${Math.random() * 20 + 340}, 70%, 60%)`
+              vx: (Math.random() - 0.5) * 0.35,
+              vy: (Math.random() - 0.5) * 0.35,
+              size: Math.random() * 2.5 + 0.8,
+              opacity: Math.random() * 0.25 + 0.15,
+              hue: 330 + Math.random() * 30
             });
           }
         }
 
         animate() {
-          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-          
-          for (let p of this.particles) {
-            p.x += p.vx;
-            p.y += p.vy;
-            
-            if (p.x < 0) p.x = this.canvas.width;
-            if (p.x > this.canvas.width) p.x = 0;
-            if (p.y < 0) p.y = this.canvas.height;
-            if (p.y > this.canvas.height) p.y = 0;
-            
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = p.color;
-            this.ctx.globalAlpha = p.opacity;
-            this.ctx.fill();
+          const ctx = this.ctx;
+          ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+          for (const particle of this.particles) {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+
+            if (particle.x < 0) particle.x = this.canvas.width;
+            if (particle.x > this.canvas.width) particle.x = 0;
+            if (particle.y < 0) particle.y = this.canvas.height;
+            if (particle.y > this.canvas.height) particle.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${particle.hue}, 75%, 68%, ${particle.opacity})`;
+            ctx.fill();
           }
-          
+
           requestAnimationFrame(() => this.animate());
         }
       }
 
-      // ==================== MOVIMENTO DO CORAÇÃO ====================
-      function updateHeartPosition() {
-        if (state.phase !== 'chasing') return;
-
-        // Movimento suave em direção ao alvo
-        const dx = state.targetPos.x - state.heartPos.x;
-        const dy = state.targetPos.y - state.heartPos.y;
-        
-        // Move mais rápido quando longe
-        const distance = Math.sqrt(dx*dx + dy*dy);
-        const speed = Math.min(CONFIG.MOVE_SPEED * 2, distance * 0.1);
-        
-        if (distance > 0.01) {
-          state.heartPos.x += (dx / distance) * speed;
-          state.heartPos.y += (dy / distance) * speed;
-        } else {
-          // Chegou no alvo, escolher novo
-          chooseNewTarget();
-        }
-        
-        // Aplicar posição
-        const x = state.heartPos.x * window.innerWidth;
-        const y = state.heartPos.y * window.innerHeight;
-        
-        // Garantir que fique dentro da tela
-        const heartSize = 100;
-        const safeX = Math.max(heartSize/2, Math.min(window.innerWidth - heartSize/2, x));
-        const safeY = Math.max(heartSize/2, Math.min(window.innerHeight - heartSize/2, y));
-        
-        elements.heart.style.left = safeX + 'px';
-        elements.heart.style.top = safeY + 'px';
-        
-        state.animationFrame = requestAnimationFrame(updateHeartPosition);
-      }
-
       function chooseNewTarget() {
         state.targetPos = {
-          x: Math.random() * 0.8 + 0.1, // 10% a 90% da tela
-          y: Math.random() * 0.8 + 0.1
+          x: Math.random() * 0.7 + 0.15,
+          y: Math.random() * 0.65 + 0.15
         };
       }
 
-      // ==================== INTERAÇÕES ====================
-      function handleInteraction(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const now = Date.now();
-        
-        // Cooldown para evitar múltiplos eventos
-        if (!state.canInteract || now - state.lastInteraction < CONFIG.TELEPORT_COOLDOWN) {
+      function updateHeartPosition() {
+        if (state.phase === 'chasing') {
+          const dx = state.targetPos.x - state.heartPos.x;
+          const dy = state.targetPos.y - state.heartPos.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const speed = Math.min(CONFIG.MOVE_SPEED * 1.8, distance * 0.13);
+
+          if (distance > 0.01) {
+            state.heartPos.x += (dx / distance) * speed;
+            state.heartPos.y += (dy / distance) * speed;
+          } else {
+            chooseNewTarget();
+          }
+        }
+
+        const heartSize = 110;
+        const nextX = Math.max(heartSize / 2, Math.min(window.innerWidth - heartSize / 2, state.heartPos.x * window.innerWidth));
+        const nextY = Math.max(heartSize / 2, Math.min(window.innerHeight - heartSize / 2, state.heartPos.y * window.innerHeight));
+        heartBtn.style.left = `${nextX}px`;
+        heartBtn.style.top = `${nextY}px`;
+
+        state.animationFrame = requestAnimationFrame(updateHeartPosition);
+      }
+
+      function handleHeartPress(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (state.phase === 'reveal') {
           return;
         }
-        
-        if (state.phase !== 'chasing') return;
-        
+
+        const now = Date.now();
+        if (now - state.lastInteraction < CONFIG.TELEPORT_COOLDOWN) {
+          return;
+        }
+
         state.lastInteraction = now;
+
+        if (state.phase === 'chasing') {
+          handleInteraction();
+          return;
+        }
+
+        if (state.phase === 'yield') {
+          handleVictory();
+        }
+      }
+
+      function handleInteraction() {
+        if (!state.canInteract) {
+          return;
+        }
+
         state.canInteract = false;
-        
-        // Incrementar contadores
-        state.interactions++;
-        state.tapCount++;
+        state.interactions += 1;
+        state.tapCount += 1;
         elements.tapCount.textContent = state.tapCount;
-        
-        // Atualizar love meter
-        const lovePercent = Math.min(100, (state.interactions / CONFIG.MAX_INTERACTIONS) * 100);
-        elements.loveMeter.textContent = Math.round(lovePercent) + '%';
-        
-        // Mensagens dinâmicas
+
+        const progress = Math.min(100, Math.round((state.interactions / CONFIG.MAX_INTERACTIONS) * 100));
+        elements.loveMeter.textContent = `${progress}%`;
+
         const messages = [
-          '💕 quase lá!', '✨ boa tentativa!', '💗 pega!', 
-          '🌸 mais rápido!', '🎯 foco!', '💖 vamos lá!'
+          '✨ quase!', '💞 mais rápido!', '💗 continua...',
+          '🌟 você está quase lá!', '🔥 acertou!', '💫 lindo!' 
         ];
         elements.message.textContent = messages[Math.floor(Math.random() * messages.length)];
-        
-        // Efeito visual
-        elements.heart.style.transform = 'translate(-50%, -50%) scale(1.2)';
+
+        heartBtn.style.transform = 'translate(-50%, -50%) scale(1.18)';
         setTimeout(() => {
-          elements.heart.style.transform = 'translate(-50%, -50%) scale(1)';
-        }, 100);
-        
-        // Teleportar para longe
+          heartBtn.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 120);
+
         chooseNewTarget();
-        
-        // Verificar vitória
+
         if (state.interactions >= CONFIG.MAX_INTERACTIONS) {
           enterYieldMode();
         }
-        
-        // Liberar cooldown
+
         setTimeout(() => {
           state.canInteract = true;
         }, CONFIG.TELEPORT_COOLDOWN);
@@ -524,136 +523,111 @@
 
       function enterYieldMode() {
         state.phase = 'yield';
-        elements.heart.classList.add('yield');
-        elements.message.textContent = '✨ AGORA PODE! Clique no coração ✨';
+        elements.message.textContent = '✨ agora clique no coração! ✨';
         elements.loveMeter.textContent = '100%';
+        heartBtn.classList.add('yield');
       }
 
-      function handleVictory(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        if (state.phase !== 'yield') return;
-        
+      function handleVictory() {
+        if (state.phase !== 'yield') {
+          return;
+        }
+
         state.phase = 'reveal';
-        
-        const messages = ['meu coração é seu', 'amor infinito', 'para sempre', 'te amo', 'minha vida'];
+        heartBtn.style.opacity = '0.25';
+        heartBtn.style.pointerEvents = 'none';
+        elements.message.textContent = '❤️ você conseguiu! ❤️';
+
+        const phrases = ['meu coração é seu', 'amor eterno', 'para sempre nós', 'te amo demais', 'minha alma e sua'];
         const emojis = ['💖', '💝', '💕', '💗', '❤️', '💘'];
-        
-        elements.loveMessage.textContent = messages[Math.floor(Math.random() * messages.length)];
+
+        elements.loveMessage.textContent = phrases[Math.floor(Math.random() * phrases.length)];
         elements.emojiDisplay.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         elements.revealCard.classList.add('show');
-        
-        elements.heart.style.opacity = '0.3';
-        elements.heart.style.pointerEvents = 'none';
-        elements.message.textContent = '❤️ TE AMO ❤️';
-        
+
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
+          state.timerInterval = null;
         }
       }
 
-      // ==================== TIMER ====================
       function startTimer() {
-        const startTime = Date.now();
-        
+        state.startTime = Date.now();
+
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+
+        elements.timerBar.style.width = '100%';
+        elements.timeDisplay.textContent = '0.0s';
+
         state.timerInterval = setInterval(() => {
-          if (state.phase === 'reveal') return;
-          
-          const elapsed = Date.now() - startTime;
+          if (state.phase === 'reveal') {
+            return;
+          }
+
+          const elapsed = Date.now() - state.startTime;
           const remaining = Math.max(0, CONFIG.TIMER_DURATION - elapsed);
           const percent = (remaining / CONFIG.TIMER_DURATION) * 100;
-          
-          elements.timerBar.style.width = percent + '%';
-          elements.timeDisplay.textContent = (elapsed / 1000).toFixed(1) + 's';
-          
+
+          elements.timerBar.style.width = `${percent}%`;
+          elements.timeDisplay.textContent = `${(elapsed / 1000).toFixed(1)}s`;
+
           if (remaining <= 0 && state.phase === 'chasing') {
-            elements.message.textContent = '⏰ tempo acabou!';
+            elements.message.textContent = '⏰ tempo acabou! reiniciando...';
             resetGame();
           }
         }, 50);
       }
 
-      // ==================== RESET COMPLETO ====================
       function resetGame() {
-        // Resetar estado
         state.phase = 'chasing';
         state.interactions = 0;
         state.tapCount = 0;
-        state.heartPos = { x: 0.5, y: 0.5 };
-        state.targetPos = { x: 0.5, y: 0.5 };
         state.lastInteraction = 0;
         state.canInteract = true;
-        
-        // Resetar elementos visuais
-        elements.heart.classList.remove('yield');
-        elements.heart.style.opacity = '1';
-        elements.heart.style.pointerEvents = 'auto';
-        elements.revealCard.classList.remove('show');
-        elements.loveMeter.textContent = '0%';
+        state.heartPos = { x: 0.5, y: 0.5 };
+        state.targetPos = { x: 0.5, y: 0.5 };
+
         elements.tapCount.textContent = '0';
-        elements.message.textContent = '💗 pegue o coração!';
-        elements.timerBar.style.width = '100%';
-        
-        // Posicionar no centro
-        const x = state.heartPos.x * window.innerWidth;
-        const y = state.heartPos.y * window.innerHeight;
-        elements.heart.style.left = x + 'px';
-        elements.heart.style.top = y + 'px';
-        
-        // Reiniciar timer
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
+        elements.loveMeter.textContent = '0%';
+        elements.message.textContent = '💗 toque no coração quando ele estiver pronto';
+        elements.revealCard.classList.remove('show');
+        heartBtn.classList.remove('yield');
+        heartBtn.style.opacity = '1';
+        heartBtn.style.pointerEvents = 'auto';
+        heartBtn.style.transform = 'translate(-50%, -50%) scale(1)';
+
+        const centerX = state.heartPos.x * window.innerWidth;
+        const centerY = state.heartPos.y * window.innerHeight;
+        heartBtn.style.left = `${centerX}px`;
+        heartBtn.style.top = `${centerY}px`;
+
         startTimer();
+        chooseNewTarget();
       }
 
-      // ==================== INICIALIZAÇÃO ====================
       function init() {
-        // Sistema de partículas
         new ParticleSystem(elements.particleCanvas);
-        
-        // Posição inicial
-        const x = state.heartPos.x * window.innerWidth;
-        const y = state.heartPos.y * window.innerHeight;
-        elements.heart.style.left = x + 'px';
-        elements.heart.style.top = y + 'px';
-        
-        // Event listeners - CORRIGIDO: usar mouseover em vez de mouseenter
-        elements.heart.addEventListener('mouseover', handleInteraction);
-        elements.heart.addEventListener('touchstart', handleInteraction, { passive: false });
-        elements.heart.addEventListener('click', handleVictory);
-        elements.heart.addEventListener('touchend', handleVictory, { passive: false });
-        
-        // Replay button
-        elements.replyBtn = document.getElementById('replayBtn');
-        elements.replyBtn.addEventListener('click', resetGame);
-        elements.replyBtn.addEventListener('touchend', resetGame, { passive: false });
-        
-        // Prevenir eventos padrão
-        document.body.addEventListener('contextmenu', (e) => e.preventDefault());
-        document.body.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
-        
-        // Iniciar movimento e timer
+        chooseNewTarget();
+
+        heartBtn.addEventListener('pointerdown', handleHeartPress);
+        elements.replayBtn.addEventListener('click', resetGame);
+        elements.replayBtn.addEventListener('touchend', resetGame, { passive: false });
+
+        window.addEventListener('resize', () => {
+          elements.particleCanvas.width = window.innerWidth;
+          elements.particleCanvas.height = window.innerHeight;
+          const centerX = state.heartPos.x * window.innerWidth;
+          const centerY = state.heartPos.y * window.innerHeight;
+          heartBtn.style.left = `${centerX}px`;
+          heartBtn.style.top = `${centerY}px`;
+        });
+
         updateHeartPosition();
         startTimer();
-        
-        // Primeiro alvo
-        setTimeout(chooseNewTarget, 500);
-        
-        // Garantir que pode interagir
-        state.canInteract = true;
-        
-        // Redimensionamento
-        window.addEventListener('resize', () => {
-          const x = state.heartPos.x * window.innerWidth;
-          const y = state.heartPos.y * window.innerHeight;
-          elements.heart.style.left = x + 'px';
-          elements.heart.style.top = y + 'px';
-        });
       }
 
-      // Iniciar quando a página carregar
       window.addEventListener('load', init);
     })();
   </script>
