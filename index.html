@@ -307,10 +307,7 @@
   <div class="reveal-card" id="revealCard">
     <div class="love-message" id="loveMessage">para sempre seu</div>
     <div class="floating-emoji" id="emojiDisplay">💖</div>
-    <button class="replay-btn" id="replayBtn" type="button">jogar novamente</button>
-  </div>
-
-  <script>
+      <button class="replay-btn" id="replayBtn" type="button">tente novamente</button>
     (function() {
       'use strict';
 
@@ -551,6 +548,22 @@
         }
       }
 
+      function showTimeoutCard() {
+        state.phase = 'reveal';
+        heartBtn.style.opacity = '0.25';
+        heartBtn.style.pointerEvents = 'none';
+        elements.message.textContent = '💖 você é a dona do meu coração';
+
+        elements.loveMessage.textContent = 'você é a dona do meu coração';
+        elements.emojiDisplay.textContent = '💖💕🌸✨';
+        elements.revealCard.classList.add('show');
+
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+      }
+
       function startTimer() {
         state.startTime = Date.now();
 
@@ -574,8 +587,7 @@
           elements.timeDisplay.textContent = `${(elapsed / 1000).toFixed(1)}s`;
 
           if (remaining <= 0 && state.phase === 'chasing') {
-            elements.message.textContent = '⏰ tempo acabou! reiniciando...';
-            resetGame();
+            showTimeoutCard();
           }
         }, 50);
       }
